@@ -1,0 +1,158 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.166.1/containers/docker-existing-dockerfile
+{
+    "name": "Sample Go Project",
+
+    // Sets the run context to one level up instead of the .devcontainer folder.
+    "context": "..",
+
+    // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+    // Set *default* container specific settings.json values on container create.
+    "dockerFile": "../Dockerfile",
+
+    // A set of name-value pairs containing Docker image build arguments that should be passed when building a Dockerfile. Environment and pre-defined variables may be referenced in the values. Defaults to not set.
+    // "build": { "args": { "MYARG": "MYVALUE", "MYARGFROMENVVAR": "${localEnv:VARIABLE_NAME}" } },
+
+	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
+	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+	// "dockerComposeFile": [],
+
+    // The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+    // "service": "tof_3d_people_detection",
+
+    // The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+    // "workspaceFolder":"/workspace",
+
+    // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+    // "shutdownAction": "stopCompose",
+
+    // Set *default* container specific settings.json values on container create.
+    "settings": {
+        "workbench.editorAssociations": {
+            "*.ipynb": "jupyter.notebook.ipynb"
+        },
+        "cSpell.userWords": [
+            "Affero",
+            "Atlassian",
+            "Cookiecutter",
+            "Deserialization",
+            "devcontainer",
+            "dockerignore",
+            "editorconfig",
+            "gitattributes",
+            "isort",
+            "Jenkinsfile",
+            "ltspice",
+            "Microservice",
+            "mypy",
+            "Pydantic",
+            "pylint",
+            "pylintrc",
+            "pyproject",
+            "pytest",
+            "repos",
+            "serializable",
+            "unstage",
+            "vLab",
+            "VLABBES",
+            "zfill"
+        ],
+        "[markdown]": {
+            "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+        },
+        "editor.rulers": [
+            88,
+            119
+        ],
+        "workbench.editor.enablePreview": false,
+        "go.lintTool":"golangci-lint",
+        "go.lintFlags": [
+            "--fast"
+        ],
+        "window.title": "${activeEditorMedium}${separator}${rootPath}",
+        "editor.linkedEditing": true,
+        "[jsonc]": {
+            "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[json]": {
+            "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "redhat.telemetry.enabled": false,
+        "[yaml]": {
+            "editor.defaultFormatter": "redhat.vscode-yaml"
+        },
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": "active",
+        "fileHeaderComment.template": {
+            "python": [
+                "#!/usr/bin/env python3",
+                "",
+                "${lineSeperator}",
+                "${linePrefix}  @file   ${filename}",
+                "${linePrefix}  @brief  TODO: Write module description here",
+                "${lineSeperator}",
+                "${linePrefix}Copyright (c) ${year}, ${company}",
+                "${emptyLine}",
+                "${linePrefix}All rights reserved.",
+                "${emptyLine}",
+                "${linePrefix}Redistribution and use in source and binary forms, with or without",
+                "${linePrefix}modification, are permitted provided that the following conditions are met:",
+                "${linePrefix}	- Redistributions of source code must retain the above copyright",
+                "${linePrefix}	  notice, this list of conditions and the following disclaimer.",
+                "${linePrefix}	- Redistributions in binary form must reproduce the above copyright",
+                "${linePrefix}    notice, this list of conditions and the following disclaimer in",
+                "${linePrefix}	  the documentation and/or other materials provided with the",
+                "${linePrefix}	  distribution.",
+                "${linePrefix}	- Neither the name of ${company} nor the names of its",
+                "${linePrefix}	  contributors may be used to endorse or promote products derived",
+                "${linePrefix}	  from this software without specific prior written permission.",
+                "${linePrefix}	- The use of this software may or may not infringe the patent rights",
+                "${linePrefix}	  of one or more patent holders.  This license does not release you",
+                "${linePrefix}	  from the requirement that you obtain separate licenses from these",
+                "${linePrefix}    patent holders to use this software.",
+                "${linePrefix}	- Use of the software either in source or binary form, must be run",
+                "${linePrefix}	  on or directly connected to an ${company} component.",
+                "${emptyLine}",
+                "${linePrefix}THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES \"AS IS\" AND ANY EXPRESS OR",
+                "${linePrefix}IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT,",
+                "${linePrefix}MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.",
+                "${linePrefix}IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT,",
+                "${linePrefix}INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT",
+                "${linePrefix}LIMITED TO, INTELLECTUAL PROPERTY RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR",
+                "${linePrefix}SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER",
+                "${linePrefix}CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,",
+                "${linePrefix}OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE",
+                "${linePrefix}OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "${lineSeperator}",
+                "",
+                "",
+                "import sys"
+            ]
+        }
+    },
+
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [],
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line if you want start specific services in your Docker Compose config.
+	// "runServices": [],
+
+    // remoteEnv can reference both local and existing container variables.
+
+    // Uncomment the next line to run commands after the container is created - for example installing curl.
+    "postCreateCommand": "apt-get update && apt-get install -y curl bash git git-lfs make vim nano zip unzip",
+
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+    // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+    // Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+    // "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+
+    // Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+    // "remoteUser": "vscode"
+}
