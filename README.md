@@ -4,7 +4,6 @@
 
 Sample Services in Go. This project is meant to showcase common patterns and best practices for application development in Go.
 
-
 ## Features
 
 Features of this project
