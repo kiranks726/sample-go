@@ -1,0 +1,14 @@
+name: CD
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    steps:
+      - name: Call CI
+        uses: ./.github/workflows/ci.yml
+
+    
+
+
