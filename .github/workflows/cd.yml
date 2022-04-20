@@ -6,6 +6,7 @@ jobs:
   invoke-build:
     uses: ./.github/workflows/ci.yml
 
+  deploy:  
     steps: 
       - name: Run the test again
         run: make test
