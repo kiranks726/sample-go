@@ -3,13 +3,6 @@ name: CD
 on: workflow_dispatch
 
 jobs:
-  deploy:
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call CI
-        uses: kiranks726/sample-go/.github/workflows/ci.yml@master
-
-    
-
-
+  invoke-build:
+    uses: .github/workflows/ci.yml
+        
