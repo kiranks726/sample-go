@@ -14,24 +14,23 @@ jobs:
     
     runs-on: ubuntu-latest
     
-    stratergy:
-      matrix:
-        node-version: [16.x]
-        go-version: [1.17]
+    env:
+      node-version: [16.x]
+      go-version: [1.17]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Setup Nodejs ${{ matrix.node-version }}
+      - name: Setup Nodejs ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.node-version }}
       
-      - name: Setup Go ${{ matrix.go-version }}
+      - name: Setup Go ${{ env.go-version }}
         uses: actions/setup-go@v3
         with:
-          go-version: ${{ matrix.go-version }}
+          go-version: ${{ env.go-version }}
       
       - name: Install dependencies
         run: make install
