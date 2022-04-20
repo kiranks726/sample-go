@@ -5,6 +5,8 @@ on:
 
 jobs:
   deploy:
+
+    runs-on: ubuntu-latest
     steps:
       - name: Call CI
         uses: ./.github/workflows/ci.yml
