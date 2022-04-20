@@ -6,7 +6,8 @@ jobs:
   invoke-build:
     uses: ./.github/workflows/ci.yml
 
-  deploy:  
+  deploy: 
+    needs: invoke-build
     
     runs-on: ubuntu-latest
     
@@ -29,7 +30,7 @@ jobs:
           go-version: ${{ env.go-version }}
       
       - name: Install dependencies
-        run: make install
+        run: echo "Stack done"
 
       - name: Syntehesize stack
         run: echo "Stack done"
