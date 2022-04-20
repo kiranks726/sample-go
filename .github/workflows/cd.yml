@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call CI
-        uses: kiranks726/sample-go/.github/workflows/ci.yml
+        uses: kiranks726/sample-go/.github/workflows/ci.yml@master
 
     
 
