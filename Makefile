@@ -1,4 +1,4 @@
-AWS_PROFILE=default
+AWS_PROFILE=593186514662_AWSAdministratorAccess
 CSV_FILE=${CSV_FILE_50_ITEM}
 RESOURCE_URL=${RESOURCE_URL_LOCAL}
 
@@ -35,11 +35,13 @@ start:	## Alias for "deploy-local"
 deploy-local:	## Start "local" environment with supporting cloud resources, NOTE: use "local" stage prefix
 	AWS_PROFILE=${AWS_PROFILE} npx sst start --stage local
 deploy:	## Deploy stack as complete build to AWS environment, NOTE: use "dev" stage prefix
-	AWS_PROFILE=${AWS_PROFILE} npx sst deploy --stage dev
+	# AWS_PROFILE=${AWS_PROFILE} npx sst deploy --stage dev
+	npx sst deploy --stage dev
 remove-env-local:	## Remove "local" environment and supporing cloud resources
 	AWS_PROFILE=${AWS_PROFILE} npx sst remove --stage local
 remove-env:	## Remove "local" environment
-	AWS_PROFILE=${AWS_PROFILE} npx sst remove --stage dev
+	# AWS_PROFILE=${AWS_PROFILE} npx sst remove --stage dev
+	npx sst remove --stage dev
 
 remove-all:	## Remove ALL environments including local
 	make remove-env-local

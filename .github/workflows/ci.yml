@@ -1,13 +1,13 @@
 name: CI
 
-on: workflow_call
-  # push:
-  #   branches:
-  #     - "*"
-  # pull_request:
-  #   branches:
-  #     - "*"
-  
+on: 
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+  workflow_call:
 
 jobs:
   build:
@@ -19,28 +19,25 @@ jobs:
       go-version: 1.17
 
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      # - name: Setup Nodejs ${{ env.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ env.node-version }}
+      - name: Setup Nodejs ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
       
-      # - name: Setup Go ${{ env.go-version }}
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: ${{ env.go-version }}
+      - name: Setup Go ${{ env.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.go-version }}
       
-      # - name: Install dependencies
-      #   run: make install
-      #   # run: echo "Done"
+      - name: Install dependencies
+        run: make install
       
-      # - name: Run lint
-      #   run: make lint        
-        # run: echo "Done"
+      - name: Run lint
+        run: make lint        
       
       - name: Run test
-        # run: make test        
-        run: echo "Done"
+        run: make test        
   
