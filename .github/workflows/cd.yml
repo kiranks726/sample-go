@@ -34,6 +34,11 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Syntehesize stack
-        run: make build
+      # - name: Syntehesize stack
+      #   run: make build
         
+      - name: Deploy stack
+        run: make deploy
+
+      - name: Remove stack
+        run: make remove-env
