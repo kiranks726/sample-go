@@ -40,7 +40,11 @@ jobs:
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::593186514662:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AWSAdministratorAccess_d54452033b57d6f2
+          # role-to-assume: arn:aws:iam::593186514662:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AWSAdministratorAccess_d54452033b57d6f2
+          # aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
     
       - name: Deploy stack
