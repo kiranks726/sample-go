@@ -1,12 +1,13 @@
-name: CI
+name: Continuous Integration
 
 on: 
-  # push:
-  #   branches:
-  #     - "*"
-  # pull_request:
-  #   branches:
-  #     - "*"
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+  # workflow_call enables this workflow to be called in another workflow
   workflow_call:
 
 jobs:
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      node-version: 16.x
+      node-version: 16.14.0
       go-version: 1.17
 
     steps:
@@ -35,6 +36,16 @@ jobs:
       - name: Install dependencies
         run: make install
       
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+          role-session-name: GithubCIActions
+          aws-region: us-east-1
+    
+      - name: Synthesize stack
+        run: npx sst build --stage dev
+
       - name: Run lint
         run: make lint        
       
