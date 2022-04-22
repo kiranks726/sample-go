@@ -10,12 +10,15 @@ jobs:
     needs: invoke-build
     
     runs-on: ubuntu-latest
+
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
     
     env:
       node-version: 16.x
       go-version: 1.17
-      # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Checkout code
@@ -40,11 +43,11 @@ jobs:
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          # role-to-assume: arn:aws:iam::593186514662:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AWSAdministratorAccess_d54452033b57d6f2
-          # aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+          role-session-name: GithubActions
           aws-region: us-east-1
     
       - name: Deploy stack
