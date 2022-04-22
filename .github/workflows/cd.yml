@@ -1,6 +1,6 @@
 name: Continuous Deployment
 
-# This enables to manually trigger the workflow
+# This enables to manually trigger the workflow on the Github action UI
 on: workflow_dispatch
 
 jobs:
@@ -8,6 +8,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
 
   deploy: 
+    # The caller workflow cannot use GitHub-hosted runners from the called repository
     needs: invoke-build
     
     runs-on: ubuntu-latest
@@ -41,10 +42,12 @@ jobs:
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
+          # TODO: role to assume can be parameterized based on the env selected on the Github action UI
           role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
           role-session-name: GithubCDActions
           aws-region: us-east-1
 
+      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       - name: Deploy stack
         run: make deploy
 
