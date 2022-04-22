@@ -1,14 +1,9 @@
 name: Continuous Integration
 
 on: 
-  # push:
-  #   branches:
-  #     - "**"
-  pull_request:
+  push:
     branches:
       - "**"
-    types: 
-      - "opened"
   # workflow_call enables this workflow to be called in another workflow
   workflow_call:
 
