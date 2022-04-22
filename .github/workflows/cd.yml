@@ -50,8 +50,10 @@ jobs:
           role-session-name: GithubActions
           aws-region: us-east-1
     
-      - name: Deploy stack
-        run: make deploy
+      # - name: Deploy stack
+      #   run: make deploy
 
-      - name: Remove stack
-        run: make remove-env
+      - name: Cat aws credentials
+        run: cat ~/.aws/credentials 
+      # - name: Remove stack
+      #   run: make remove-env
