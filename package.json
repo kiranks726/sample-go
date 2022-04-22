@@ -1,5 +1,5 @@
 {
-  "name": "sample-go",
+  "name": "ctx-kitchensink-go",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -6,9 +6,6 @@
 # testing
 /coverage
 
-# production
-/build
-
 # misc
 .DS_Store
 
@@ -30,3 +27,6 @@ yarn-error.log*
 # hide lint report
 lint_report.html
 lint_report*
+
+# Private NOTES
+NOTES.md

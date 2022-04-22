@@ -1,6 +1,4 @@
 
-import OtherStack from "./OtherStack";
-import TodoStack from "./TodoStack";
 import MovieStack from "./MovieStack";
 export default function main(app) {
 
@@ -9,8 +7,6 @@ export default function main(app) {
     runtime: "go1.x"
   });
 
-  new OtherStack(app, "other-stack");
-  new TodoStack(app, "todo-stack");
   new MovieStack(app, "movie-stack");
 
 }
