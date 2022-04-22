@@ -37,23 +37,18 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      # - name: Syntehesize stack
-      #   run: make build
-
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
           role-session-name: GithubActions
           aws-region: us-east-1
     
+      - name: Syntehesize stack
+        run: make build
+
       # - name: Deploy stack
       #   run: make deploy
 
-      - name: Cat aws credentials
-        run: cat ~/.aws/credentials 
       # - name: Remove stack
       #   run: make remove-env
