@@ -11,7 +11,7 @@ on:
   workflow_call:
 
 jobs:
-  build:
+  post-commit:
     
     runs-on: ubuntu-latest
     
