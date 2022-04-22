@@ -11,9 +11,14 @@ on:
   workflow_call:
 
 jobs:
-  post-commit:
+  build:
     
     runs-on: ubuntu-latest
+
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
     
     env:
       node-version: 16.14.0

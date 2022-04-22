@@ -48,5 +48,5 @@ jobs:
       - name: Deploy stack
         run: make deploy
 
-      # - name: Remove stack
-      #   run: make remove-env
+      - name: Remove stack
+        run: make remove-env
