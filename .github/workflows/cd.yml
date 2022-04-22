@@ -1,4 +1,4 @@
-name: Manual Deployment
+name: Deployment
 
 # This enables to manually trigger the workflow on the Github action UI
 on: workflow_dispatch
