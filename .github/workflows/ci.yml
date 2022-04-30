@@ -48,12 +48,17 @@ jobs:
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # stage can be dev as this is only used for running tests against and not deployed.
       # TODO: Parameterize stage in make build of the Makefile ?
-      - name: Synthesize stack
-        run: npx sst build --stage dev
-
-      - name: Run lint
-        run: make lint        
+      - name: Display for aws keys
+        run: |
+          echo "aws_access_key_id is $AWS_ACCESS_KEY_ID"
+          echo "aws_access_key_id is $aws_access_key_id"
       
-      - name: Run test
-        run: make test        
+      #- name: Synthesize stack
+        #run: npx sst build --stage dev
+
+      #- name: Run lint
+        #run: make lint        
+      
+      #- name: Run test
+        #run: make test        
   
