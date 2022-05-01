@@ -30,10 +30,10 @@ jobs:
         with:
           node-version: ${{ env.node-version }}
       
-      # - name: Setup Go ${{ env.go-version }}
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: ${{ env.go-version }}
+      - name: Setup Go ${{ env.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.go-version }}
       
       # - name: Install dependencies
       #   run: make install
