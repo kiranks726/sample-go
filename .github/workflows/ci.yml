@@ -25,6 +25,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Check branch
+        run: echo "Branch name is ${{ github.ref_name }}""
       
       # - name: Setup Nodejs ${{ env.node-version }}
       #   uses: actions/setup-node@v3
