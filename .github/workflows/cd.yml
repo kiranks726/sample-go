@@ -1,7 +1,17 @@
 name: Deployment
 
 # This enables to manually trigger the workflow on the Github action UI
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Environment
+        options:
+          - development
+          - release
+          - production
+        required: true  
 
 jobs:
   invoke-build:
@@ -13,7 +23,7 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    environment: development
+    environment: ${{ github.events.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
