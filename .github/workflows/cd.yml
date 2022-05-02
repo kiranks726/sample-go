@@ -33,25 +33,25 @@ jobs:
         with:
           node-version: ${{ env.node-version }}
       
-      - name: Setup Go ${{ env.go-version }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.go-version }}
+      # - name: Setup Go ${{ env.go-version }}
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: ${{ env.go-version }}
       
-      - name: Install dependencies
-        run: make install
+      # - name: Install dependencies
+      #   run: make install
 
-      - name: Configure aws
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          # TODO: role to assume can be parameterized based on the env selected on the Github action UI
-          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
-          role-session-name: GithubCDActions
-          aws-region: us-east-1
+      # - name: Configure aws
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     # TODO: role to assume can be parameterized based on the env selected on the Github action UI
+      #     role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+      #     role-session-name: GithubCDActions
+      #     aws-region: us-east-1
 
-      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      - name: Deploy stack
-        run: make deploy
+      # # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
+      # - name: Deploy stack
+      #   run: make deploy
 
-      - name: Remove stack
-        run: make remove-env
+      # - name: Remove stack
+      #   run: make remove-env
