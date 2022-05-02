@@ -2,8 +2,9 @@ name: Continuous Integration
 
 on: 
   pull_request:
-    branches:
-      - "**"
+    types: [opened, synchronize, reopened]
+    branches: [master, release/*, develop]
+
   # workflow_call enables this workflow to be called in another workflow
   workflow_call:
 
@@ -30,30 +31,29 @@ jobs:
         with:
           node-version: ${{ env.node-version }}
       
-      # - name: Setup Go ${{ env.go-version }}
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: ${{ env.go-version }}
+      - name: Setup Go ${{ env.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.go-version }}
       
-      # - name: Install dependencies
-      #   run: make install
+      - name: Install dependencies
+        run: make install
       
-      # - name: Configure aws
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
-      #     role-session-name: GithubCIActions
-      #     aws-region: us-east-1
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+          role-session-name: GithubCIActions
+          aws-region: us-east-1
     
       # This generates Cloud formation template which is referenced by the sst unit test cases.
-      # stage can be dev as this is only used for running tests against and not deployed.
-      # TODO: Parameterize stage in make build of the Makefile ?
-      # - name: Synthesize stack
-      #   run: npx sst build --stage dev
+      # The generated Cloud formation template is only used for running tests against and not deployed.
+      - name: Synthesize stack
+        run: make build
 
-      # - name: Run lint
-      #   run: make lint        
+      - name: Run lint
+        run: make lint        
       
-      # - name: Run test
-      #   run: make test        
+      - name: Run test
+        run: make test        
   
