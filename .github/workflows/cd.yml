@@ -13,10 +13,10 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    if: github.ref_name == "develop"
+    if: github.ref_name == 'develop'
     environment: development
 
-    if: github.ref_name == "master"
+    if: github.ref_name == 'master'
     environment: production
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
