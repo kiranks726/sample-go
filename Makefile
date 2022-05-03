@@ -81,13 +81,15 @@ lint-run: ## Run lint without the install
 lint: ## run both lint install and run
 	make lint-install && make lint-run
 test-install:	## install test packages
-	go get -u github.com/stretchr/testify
+	#go get -u github.com/stretchr/testify
+	go install github.com/jstemmer/go-junit-report@latest
 test-run:	## run tests
-	cd $(MODULE_PATH); go test -coverprofile=../../$(COVERAGE_PATH)/coverage.out -coverpkg=./... ./tests/... -v
-	cd $(MODULE_PATH); go tool cover -html=../../$(COVERAGE_PATH)/coverage.out -o ../../$(COVERAGE_PATH)/$(COVERAGE_FILE)
-	cp -f $(COVERAGE_PATH)/$(COVERAGE_FILE) $(COVERAGE_PATH)/coverage_report_latest.html
-	rm $(COVERAGE_PATH)/coverage.out
-	@echo "\033[1;32mCoverage report available at $(COVERAGE_PATH)/$(COVERAGE_FILE)\033[0m"
+	#cd $(MODULE_PATH); go test -coverprofile=../../$(COVERAGE_PATH)/coverage.out -coverpkg=./... ./tests/... -v
+	#cd $(MODULE_PATH); go tool cover -html=../../$(COVERAGE_PATH)/coverage.out -o ../../$(COVERAGE_PATH)/$(COVERAGE_FILE)
+	#cp -f $(COVERAGE_PATH)/$(COVERAGE_FILE) $(COVERAGE_PATH)/coverage_report_latest.html
+	#rm $(COVERAGE_PATH)/coverage.out
+	cd $(MODULE_PATH); go test -v 2>&1 | go-junit-report > report.xml
+	#@echo "\033[1;32mCoverage report available at $(COVERAGE_PATH)/$(COVERAGE_FILE)\033[0m"
 test:	## install and run tests
 	make test-install && make test-run
 godocs: ## Browse godocs for project using local http server
