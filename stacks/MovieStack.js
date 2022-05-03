@@ -12,23 +12,24 @@ export default class Moviestack extends sst.Stack {
       primaryIndex: { partitionKey: "Id" },
     });
 
-    const moviesRootUrl = "cmd/handlers/movies/"
+    // Route Constants
+    const MOVIES_API_ENDPOINT = " /movies"
+    const MOVIES_ID_PATH = "/{id}"
     
     // Create a HTTP API
     const moviesApi = new sst.Api(this, "moviesApi", {
       defaultFunctionProps: {
-        srcPath: "backend/mainmodule",
         environment: {
           movieTableName: moviesTable.dynamodbTable.tableName,
         },
       },
       routes: {
-        "GET    /":             moviesRootUrl+"/list/list.go",
-        "GET    /movies":       "cmd/handlers/movies/list/list.go",
-        "POST   /movies":       "cmd/handlers/movies/create/create.go",
-        "GET    /movies/{id}":  "cmd/handlers/movies/get/get.go",
-        "PUT    /movies/{id}":  "cmd/handlers/movies/update/update.go",
-        "DELETE /movies/{id}":  "cmd/handlers/movies/delete/delete.go",
+        ["GET"    + MOVIES_API_ENDPOINT]:           this.movieRoute("list"),
+        ["POST"   + MOVIES_API_ENDPOINT]:           this.movieRoute("create"),
+        ["GET"    + MOVIES_API_ENDPOINT + MOVIES_ID_PATH]: this.movieRoute("get"),
+        ["PUT"    + MOVIES_API_ENDPOINT + MOVIES_ID_PATH]: this.movieRoute("update"),
+        ["DELETE" + MOVIES_API_ENDPOINT + MOVIES_ID_PATH]: this.movieRoute("delete"),
+
       },
     });
 
@@ -40,5 +41,20 @@ export default class Moviestack extends sst.Stack {
       moviesApiEndpoint: moviesApi.url,
       moviesTablename: moviesTable.dynamodbTable.tableName,
     });
+  }
+
+  // Additional Methods
+  resourceName(name) {
+    return `${this.stage}-ctx-kitchensink-${name}`
+  }
+  
+  movieRoute(name) {
+    return {
+      function: {
+        srcPath: "backend/mainmodule",
+        functionName: this.resourceName(`movies-${name}`),
+        handler: "cmd/handlers/movies/" + name + "/" + name + ".go",
+      }
+    }
   }
 }
