@@ -4,7 +4,7 @@ name: Deployment
 on: 
   workflow_dispatch:
     inputs:
-      environment:
+      deploy-env:
         type: choice
         description: Environment
         options:
@@ -23,7 +23,7 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    environment: ${{ github.events.inputs.environment }}
+    environment: ${{ github.events.inputs.deploy-env }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
