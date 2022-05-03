@@ -42,12 +42,12 @@ jobs:
       - name: Install dependencies
         run: make install
       
-      - name: Configure aws
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
-          role-session-name: GithubCIActions
-          aws-region: us-east-1
+      # - name: Configure aws
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+      #     role-session-name: GithubCIActions
+      #     aws-region: us-east-1
     
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # The generated Cloud formation template is only used for running tests against and not deployed.
