@@ -14,6 +14,9 @@ DATA_IMPORT_CMD_PATH=cmd/cli/import_data/main.go
 LINT_PATH=reports/lint
 LINT_FILE=lint_report_$(shell date '+%Y-%m-%d-%H%M%S').html
 
+DEPLOY_OS=linux
+DEPLOY_ARCH=amd64
+
 COVERAGE_PATH=reports/coverage
 COVERAGE_FILE=coverage_report_$(shell date '+%Y-%m-%d-%H%M%S').html
 
@@ -38,11 +41,11 @@ install:
 start:	## Alias: Start "local" environment with supporting cloud resources
 	make deploy-local
 build:	## Build project for deployment
-	AWS_PROFILE=${AWS_PROFILE} npx sst build
+	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst build
 deploy-local:	## Start "local" environment with supporting cloud resources, NOTE: this will use "local" stage prefix
 	AWS_PROFILE=${AWS_PROFILE} npx sst start --stage local
 deploy-dev:	## Deploy stack as complete build to AWS environment, NOTE: this will use "dev" stage prefix
-	AWS_PROFILE=${AWS_PROFILE} npx sst deploy --stage dev
+	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst deploy --stage dev
 deploy:	## Alias: Deploy stack as complete build to AWS environment, NOTE: this willuse "dev" stage prefix
 	make deploy-dev
 remove-local:	## Remove "local" environment and supporing cloud resources
@@ -77,15 +80,15 @@ lint-run: ## Run lint without the install
 	cp -f $(LINT_PATH)/$(LINT_FILE) $(LINT_PATH)/lint_report_latest.html
 lint: ## run both lint install and run
 	make lint-install && make lint-run
-test-install:
+test-install:	## install test packages
 	go get -u github.com/stretchr/testify
-test-run:
+test-run:	## run tests
 	cd $(MODULE_PATH); go test -coverprofile=../../$(COVERAGE_PATH)/coverage.out -coverpkg=./... ./tests/... -v
 	cd $(MODULE_PATH); go tool cover -html=../../$(COVERAGE_PATH)/coverage.out -o ../../$(COVERAGE_PATH)/$(COVERAGE_FILE)
 	cp -f $(COVERAGE_PATH)/$(COVERAGE_FILE) $(COVERAGE_PATH)/coverage_report_latest.html
 	rm $(COVERAGE_PATH)/coverage.out
 	@echo "\033[1;32mCoverage report available at $(COVERAGE_PATH)/$(COVERAGE_FILE)\033[0m"
-test:
+test:	## install and run tests
 	make test-install && make test-run
 godocs: ## Browse godocs for project using local http server
 	@echo "NOTE: Docs will be hosted on http://127.0.0.1:6060"
