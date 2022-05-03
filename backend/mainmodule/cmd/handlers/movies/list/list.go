@@ -14,6 +14,8 @@ import (
 )
 
 func ListHandler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// EXAMPLE LIVE LAMBDA CHANGE!!
+	// log.Info().Msg("hello world")
 	// Load app configuration
 	config := Config.Config{}.GetConfig()
 
@@ -34,6 +36,7 @@ func ListHandler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxy
 		return events.APIGatewayProxyResponse{StatusCode: http.StatusInternalServerError}, nil
 	}
 
+	// Send Response
 	response := events.APIGatewayProxyResponse{Body: string(itemArrayJSON), StatusCode: http.StatusOK}
 	response.Headers = make(map[string]string)
 	response.Headers["Content-Type"] = "application/json"
