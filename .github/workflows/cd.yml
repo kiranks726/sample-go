@@ -23,7 +23,7 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    environment: "${{ github.events.inputs.deploy-env }}"
+    environment: ${{ github.event.inputs.deploy-env }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
