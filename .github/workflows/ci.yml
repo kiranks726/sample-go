@@ -68,6 +68,5 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage_report_latest.html
           flags: unittests
-          path_to_write_report: ./codecov_report.txt
           verbose: true
   
