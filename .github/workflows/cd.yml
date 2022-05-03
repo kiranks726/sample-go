@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: make install
 
-       - name: Check secret
+      - name: Check secret
         run: echo "Secret name is ${{ secrets.AWS_DEPLOY_ROLE }}"
 
       # - name: Configure aws
@@ -60,6 +60,7 @@ jobs:
       #     role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
       #     role-session-name: GithubCDActions
       #     aws-region: us-east-1
+
 
       # # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       # - name: Deploy stack
