@@ -38,18 +38,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      #- name: Setup Nodejs ${{ env.node-version }}
-        #uses: actions/setup-node@v3
-        #with:
-          #node-version: ${{ env.node-version }}
+      # - name: Setup Nodejs ${{ env.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ env.node-version }}
       
-      #- name: Setup Go ${{ env.go-version }}
-        #uses: actions/setup-go@v3
-        #with:
-          #go-version: ${{ env.go-version }}
+      # - name: Setup Go ${{ env.go-version }}
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: ${{ env.go-version }}
       
-      #- name: Install dependencies
-        #run: make install
+      # - name: Install dependencies
+      #   run: make install
 
       - name: Check secret
         run: echo "Secret name is ${{ secrets.AWS_DEPLOY_ROLE }}"
