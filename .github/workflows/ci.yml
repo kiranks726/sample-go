@@ -54,9 +54,9 @@ jobs:
       # - name: Synthesize stack
       #   run: make build
 
-      - name: Run lint
-        run: make lint        
+      #- name: Run lint
+        #run: make lint        
       
-      - name: Run test
-        run: make test        
+      #- name: Run test
+        #run: make test        
   
