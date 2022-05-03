@@ -29,18 +29,18 @@ jobs:
       - name: Check branch
         run: echo "Branch name is ${{ github.ref_name }}"
       
-      - name: Setup Nodejs ${{ env.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.node-version }}
+      # - name: Setup Nodejs ${{ env.node-version }}
+        #uses: actions/setup-node@v3
+        #with:
+          #node-version: ${{ env.node-version }}
       
-      - name: Setup Go ${{ env.go-version }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.go-version }}
+      #- name: Setup Go ${{ env.go-version }}
+        #uses: actions/setup-go@v3
+        #with:
+          #go-version: ${{ env.go-version }}
       
-      - name: Install dependencies
-        run: make install
+      #- name: Install dependencies
+        #run: make install
       
       # - name: Configure aws
       #   uses: aws-actions/configure-aws-credentials@v1
