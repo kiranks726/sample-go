@@ -67,7 +67,7 @@ jobs:
           token: 82d95ab4-8c17-46e2-8b84-30f6b9d13baa
           directory: ./reports/coverage/
           fail_ci_if_error: true
-          files: coverage_report_latest.html
+          files: coverage.xml
           flags: unittests
           verbose: true
   
