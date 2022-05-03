@@ -1,10 +1,6 @@
 name: Continuous Integration
 
 on: 
-  push:
-    branches:
-      - '**'
-
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop]
@@ -43,20 +39,20 @@ jobs:
       - name: Install dependencies
         run: make install
       
-      # - name: Configure aws
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
-      #     role-session-name: GithubCIActions
-      #     aws-region: us-east-1
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+          role-session-name: GithubCIActions
+          aws-region: us-east-1
     
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # The generated Cloud formation template is only used for running tests against and not deployed.
-      # - name: Synthesize stack
-      #   run: make build
+      - name: Synthesize stack
+        run: make build
 
-      # - name: Run lint
-      #   run: make lint        
+      - name: Run lint
+        run: make lint        
       
       - name: Run test
         run: make test  
@@ -64,10 +60,9 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2    
         with:
-          token: 82d95ab4-8c17-46e2-8b84-30f6b9d13baa
           directory: ./reports/coverage/
           fail_ci_if_error: true
-          files: coverage.xml
+          files: coverage_report_latest.html
           flags: unittests
           verbose: true
   
