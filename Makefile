@@ -87,7 +87,7 @@ test-install:	## install test packages
 test-run:	## run tests
 	cd $(MODULE_PATH); go test -coverprofile=../../$(COVERAGE_PATH)/coverage.out -coverpkg=./... ./tests/... -v
 	cd $(MODULE_PATH); go tool cover -html=../../$(COVERAGE_PATH)/coverage.out -o ../../$(COVERAGE_PATH)/$(COVERAGE_FILE)
-	cd $(MODULE_PATH); /root/go/bin/gocov convert ../../$(COVERAGE_PATH)/coverage.out | /root/go/bin/gocov-xml > ../../$(COVERAGE_PATH)/coverage_report.xml
+	cd $(MODULE_PATH); gocov convert ../../$(COVERAGE_PATH)/coverage.out | gocov-xml > ../../$(COVERAGE_PATH)/coverage_report.xml
 	cp -f $(COVERAGE_PATH)/$(COVERAGE_FILE) $(COVERAGE_PATH)/coverage_report_latest.html
 	rm $(COVERAGE_PATH)/coverage.out
 	@echo "\033[1;32mCoverage report available at $(COVERAGE_PATH)/$(COVERAGE_FILE)\033[0m"
