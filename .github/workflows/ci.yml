@@ -50,17 +50,27 @@ jobs:
       - name: Synthesize stack
         run: make build
 
-      - name: Run lint
-        run: make lint
+      # - name: Run lint
+      #   run: make lint
 
-      - name: Run test
-        run: make test
+      # - name: Run test
+      #   run: make test
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+      - name: cdk diff
+        uses: youyo/aws-cdk-github-actions@v2
         with:
-          directory: ./reports/coverage/
-          fail_ci_if_error: true
-          files: coverage_report.xml
-          flags: unittests
-          verbose: true
+          cdk_subcommand: 'diff'
+          actions_comment: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
+
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v2
+      #   with:
+      #     directory: ./reports/coverage/
+      #     fail_ci_if_error: true
+      #     files: coverage_report.xml
+      #     flags: unittests
+      #     verbose: true
