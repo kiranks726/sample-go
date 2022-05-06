@@ -76,6 +76,7 @@ jobs:
           curl -X POST \
             $URL \
             -H "Content-Type: application/json" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
             --data '{"body": ${payload}}'
         
         # uses: youyo/aws-cdk-github-actions@v2
