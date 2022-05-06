@@ -74,11 +74,7 @@ jobs:
           "
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          curl -X POST \
-            $URL \
-            -H "Content-Type: application/json" \
-            -H "Authorization: token ${GITHUB_TOKEN}" \
-            --data '{"body": ${payload}}'
+          echo "${payload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
         
         # uses: youyo/aws-cdk-github-actions@v2
         # with:
