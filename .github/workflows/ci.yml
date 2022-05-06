@@ -57,14 +57,35 @@ jobs:
       #   run: make test
 
       - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
-        with:
-          cdk_subcommand: 'diff'
-          actions_comment: true
-        env:
-          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-          AWS_DEFAULT_REGION: 'us-east-1'
+        env: 
+          URL: ${{ github.event.pull_request.comments_url }}
+        run: |
+          npx sst diff 2>&1 | tee infra_changes_report.log
+          output=$(cat infra_changes_report.log)
+          commentWrapper="#### \npx sst diff
+          <details><summary>Show Output</summary>
+
+          \`\`\`
+          ${output}
+          \`\`\`
+          
+          </details>
+          "
+          payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
+
+          curl -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            --data '{"body": ${payload}}'
+        
+        # uses: youyo/aws-cdk-github-actions@v2
+        # with:
+        #   cdk_subcommand: 'diff'
+        #   actions_comment: true
+        # env:
+        #   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+        #   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+        #   AWS_DEFAULT_REGION: 'us-east-1'
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v2
