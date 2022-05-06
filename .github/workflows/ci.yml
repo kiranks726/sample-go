@@ -59,6 +59,7 @@ jobs:
       - name: cdk diff
         env: 
           URL: ${{ github.event.pull_request.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           npx sst diff 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
