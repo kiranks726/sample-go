@@ -63,7 +63,7 @@ jobs:
           PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           PR_URL: ${{ github.event.pull_request.html_url}}
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_MESSAGE: $(git log --format=%B -n 1 HEAD^2)
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           echo "Commit message is: ${COMMIT_MESSAGE}"
