@@ -69,7 +69,7 @@ jobs:
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
           prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-          commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
+          commitMessage=$(/usr/bin/git log --format=%B -n 1 HEAD^2)
           commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
           <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
           <details><summary>Show Output</summary>
