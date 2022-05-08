@@ -53,11 +53,11 @@ jobs:
       # - name: Run lint
       #   run: make lint
 
-      - name: Run lint and create annotations
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: 'latest'
-          working-directory: backend/mainmodule
+      # - name: Run lint and create annotations
+      #   uses: golangci/golangci-lint-action@v3
+      #   with:
+      #     version: 'latest'
+      #     working-directory: backend/mainmodule
   
       # - name: Run test
       #   run: make test
