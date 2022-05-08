@@ -46,7 +46,7 @@ jobs:
           aws-region: us-east-1
 
       # This generates Cloud formation template which is referenced by the sst unit test cases.
-      # The generated Cloud formation template is only used for running tests against and not deployed.
+      # The generated Cloud formation template is only used for running tests against and not deployed
       - name: Synthesize stack
         run: make build
 
