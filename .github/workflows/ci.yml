@@ -25,7 +25,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          #fetch-depth: 2
+          # Checkout pull request HEAD commit instead of merge commit
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Nodejs ${{ env.node-version }}
@@ -66,7 +66,6 @@ jobs:
           PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           PR_URL: ${{ github.event.pull_request.html_url}}
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
@@ -85,7 +84,7 @@ jobs:
           "
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          echo "${payload}" | curl -s -S --header "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+          echo "${payload}" | curl -s -S --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
         # uses: youyo/aws-cdk-github-actions@v2
         # with:
