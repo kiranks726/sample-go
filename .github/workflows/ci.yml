@@ -65,11 +65,15 @@ jobs:
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
+          echo "Github workspace directory1 is: ${{ github.workspace }}"
+          echo "Github workspace directory2 is: $GITHUB_WORKSPACE"
+          echo "Github workspace directory3 is: ${GITHUB_WORKSPACE}"
+          echo "Github workspace directory4 is: ${env.GITHUB_WORKSPACE}"
           npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
           prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-          commitMessage=$(git --git-dir ${GITHUB_WORKSPACE}/.git log --format=%B -n 1 HEAD^2)
+          commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
           commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
           <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
           <details><summary>Show Output</summary>
