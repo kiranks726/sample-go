@@ -53,29 +53,35 @@ jobs:
       # - name: Run lint
       #   run: make lint
 
+      - name: Run lint and create annotations
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: 'latest'
+          working-directory: backend/mainmodule
+  
       # - name: Run test
       #   run: make test
-
       - name: cdk diff
-        env: 
+        env:
           URL: ${{ github.event.pull_request.comments_url }}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
+          npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
-          commentWrapper="#### \npx sst diff
+          commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
           <details><summary>Show Output</summary>
 
           \`\`\`
           ${output}
           \`\`\`
-          
+
           </details>
           "
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          echo "${payload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
-        
+          echo "${payload}" | curl -s -S --header "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+
         # uses: youyo/aws-cdk-github-actions@v2
         # with:
         #   cdk_subcommand: 'diff'
