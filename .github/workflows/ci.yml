@@ -65,10 +65,6 @@ jobs:
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
-          echo "Github workspace directory1 is: ${{ github.workspace }}"
-          echo "Github workspace directory2 is: $GITHUB_WORKSPACE"
-          echo "Github workspace directory3 is: ${GITHUB_WORKSPACE}"
-          echo "Github workspace directory4 is: ${env.GITHUB_WORKSPACE}"
           npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
