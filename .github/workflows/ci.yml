@@ -60,17 +60,18 @@ jobs:
       #   run: make test
       - name: cdk diff
         env:
-          URL: ${{ github.event.pull_request.comments_url }}
-          PR_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
+          PR_URL: ${{ github.event.pull_request.html_url}}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
-          prCommitUrl="${URL}${PR_COMMIT_SHA}"
+          prCommitUrl="${PR_URL}commits/${COMMIT_SHA}"
           commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
-          <a href="${prCommitUrl}">COMMIT_MESSAGE</a>
+          <a href="${prCommitUrl}">Commit: ${COMMIT_MESSAGE}</a>
           <details><summary>Show Output</summary>
 
           \`\`\`
@@ -81,7 +82,7 @@ jobs:
           "
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          echo "${payload}" | curl -s -S --header "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+          echo "${payload}" | curl -s -S --header "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
         # uses: youyo/aws-cdk-github-actions@v2
         # with:
