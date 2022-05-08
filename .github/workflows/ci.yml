@@ -49,16 +49,13 @@ jobs:
       # The generated Cloud formation template is only used for running tests against and not deployed
       # - name: Synthesize stack
       #   run: npx sst build --stage dev
-
       # - name: Run lint
       #   run: make lint
-
       # - name: Run lint and create annotations
       #   uses: golangci/golangci-lint-action@v3
       #   with:
       #     version: 'latest'
       #     working-directory: backend/mainmodule
-  
       # - name: Run test
       #   run: make test
       - name: cdk diff
@@ -73,7 +70,7 @@ jobs:
           output=$(cat infra_changes_report.log)
           prCommitUrl="${URL}${PR_COMMIT_SHA}"
           commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
-          <a href = "${prCommitUrl}>COMMIT_MESSAGE</a>"
+          <a href="${prCommitUrl}">COMMIT_MESSAGE</a>
           <details><summary>Show Output</summary>
 
           \`\`\`
