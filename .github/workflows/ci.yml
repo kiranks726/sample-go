@@ -47,8 +47,8 @@ jobs:
 
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # The generated Cloud formation template is only used for running tests against and not deployed
-      - name: Synthesize stack
-        run: npx sst build --stage dev
+      # - name: Synthesize stack
+      #   run: npx sst build --stage dev
 
       # - name: Run lint
       #   run: make lint
@@ -64,12 +64,16 @@ jobs:
       - name: cdk diff
         env:
           URL: ${{ github.event.pull_request.comments_url }}
+          PR_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           npx sst telemetry disable
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
           output=$(cat infra_changes_report.log)
+          prCommitUrl="${URL}${PR_COMMIT_SHA}"
           commentWrapper="#### Differences between the infrastructure specified in the current state of the CDK app and the currently deployed application
+          <a href = "${prCommitUrl}>COMMIT_MESSAGE</a>"
           <details><summary>Show Output</summary>
 
           \`\`\`
