@@ -50,8 +50,8 @@ jobs:
 
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # The generated Cloud formation template is only used for running tests against and not deployed.
-      # - name: Synthesize stack
-      #   run: npx sst build --stage dev
+      - name: Synthesize stack
+        run: make build
 
       # - name: Run lint and create annotations
       #   uses: golangci/golangci-lint-action@v3
@@ -59,8 +59,8 @@ jobs:
       #     version: 'latest'
       #     working-directory: ${{ github.workspace }}/backend/mainmodule
 
-      # - name: Run test
-      #   run: make test
+      - name: Run test
+        run: make test
 
       - name: Run diff to see infrastructure changes
         run: |
