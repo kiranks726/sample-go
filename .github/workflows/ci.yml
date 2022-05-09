@@ -95,7 +95,7 @@ jobs:
 
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
-        - name: Add coverage report as comment on Pull Request
-          run: |
-            output=$(cat reports/coverage/infra_changes_report.log)
-            echo "output is $output"
+      - name: Add coverage report as comment on Pull Request
+        run: |
+          output=$(cat reports/coverage/infra_changes_report.log)
+          echo "output is $output"
