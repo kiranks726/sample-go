@@ -95,26 +95,12 @@ jobs:
 
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
-      - name: Add coverage report as comment on Pull Request
+      - name: Generate Code Coverage report
         if: github.event_name == 'pull_request'
-        env:
-          PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
-          PR_URL: ${{ github.event.pull_request.html_url}}
-          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
-          prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-          commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
-          commentWrapper="#### Coverage report
-          <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
-          <details><summary>Show Output</summary>
-
-          \`\`\`
-          ${output}
-          \`\`\`
-
-          </details>
-          "
-          payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
-
-          echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+        uses: barecheck/code-coverage-action@v1
+        with:
+          barecheck-github-app-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: "${{ github.workspace }}/reports/coverage/coverage.lcov"
+          minimum-ratio: 0 # Fails Github action once code coverage is decreasing
+          send-summary-comment: true
+          show-annotations: "warning" # Possible options warning|error
