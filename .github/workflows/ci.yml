@@ -1,12 +1,12 @@
 name: Continuous Integration
 
 on:
-  push:
-    branches:
-      - "**"
+  # push:
+  #   branches:
+  #     - "**"
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [master, release/*, develop]
+    branches: [master, release/*, develop, feature/*]
 
   # workflow_call enables this workflow to be called in another workflow
   workflow_call:
@@ -96,6 +96,27 @@ jobs:
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
       - name: Add coverage report as comment on Pull Request
+        if: github.event_name == 'pull_request'
+        env:
+          PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
+          PR_URL: ${{ github.event.pull_request.html_url}}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          output=$(cat reports/coverage/infra_changes_report.log)
+          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report.xml)
           echo "output is $output"
+          prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
+          commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
+          commentWrapper="#### Coverage report
+          <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
+          <details><summary>Show Output</summary>
+
+          \`\`\`
+          ${output}
+          \`\`\`
+
+          </details>
+          "
+          payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
+
+          echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+          
