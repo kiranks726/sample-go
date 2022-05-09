@@ -84,7 +84,7 @@ jobs:
           "
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          echo "${payload}" | curl -s -S --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+          echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
         # uses: youyo/aws-cdk-github-actions@v2
         # with:
