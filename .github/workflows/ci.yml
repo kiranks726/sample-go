@@ -102,8 +102,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url}}
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report.xml)
-          echo "output is $output"
+          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
           prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
           commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
           commentWrapper="#### Coverage report
@@ -119,4 +118,3 @@ jobs:
           payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
           echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
-          
