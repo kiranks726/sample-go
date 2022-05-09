@@ -68,7 +68,7 @@ jobs:
           npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
 
       - name: Post infrastructure changes as comment on Pull Request
-        if: github.event == "pull_request"
+        if: github.event == 'pull_request'
         env:
           PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           PR_URL: ${{ github.event.pull_request.html_url}}
