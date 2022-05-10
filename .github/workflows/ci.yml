@@ -134,3 +134,4 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
+          minimum_coverage: 1
