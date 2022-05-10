@@ -105,26 +105,32 @@ jobs:
       #     send-summary-comment: true
       #     show-annotations: "" # Possible options warning|error
 
-      - name: Add coverage report as comment on Pull Request
-        if: github.event_name == 'pull_request'
-        env:
-          PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
-          PR_URL: ${{ github.event.pull_request.html_url}}
-          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
-          prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-          commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
-          commentWrapper="#### Coverage Report
-          <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
-          <details><summary>Show Output</summary>
+      # - name: Add coverage report as comment on Pull Request
+      #   if: github.event_name == 'pull_request'
+      #   env:
+      #     PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
+      #     PR_URL: ${{ github.event.pull_request.html_url}}
+      #     COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+      #   run: |
+      #     output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
+      #     prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
+      #     commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
+      #     commentWrapper="#### Coverage Report
+      #     <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
+      #     <details><summary>Show Output</summary>
 
-          \`\`\`
-          ${output}
-          \`\`\`
+      #     \`\`\`
+      #     ${output}
+      #     \`\`\`
 
-          </details>
-          "
-          payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
+      #     </details>
+      #     "
+      #     payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
-          echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+      #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+
+        - name: Display coverage metrics in Pull Request
+          uses: 5monkeys/cobertura-action@master
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
