@@ -62,8 +62,8 @@ jobs:
       #     version: 'latest'
       #     working-directory: ${{ github.workspace }}/backend/mainmodule
 
-      - name: Run test
-        run: make test
+      # - name: Run test
+      #   run: make test
 
       # - name: Run diff to see infrastructure changes
       #   run: |
@@ -129,10 +129,13 @@ jobs:
 
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
 
-      - name: Display coverage metrics in Pull Request
-        uses: 5monkeys/cobertura-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
-          minimum_coverage: 1
-          fail_below_threshold: false
+      # - name: Display coverage metrics in Pull Request
+      #   uses: 5monkeys/cobertura-action@master
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
+      #     minimum_coverage: 1
+      #     fail_below_threshold: false
+
+      - name: Adding markdown
+        run: echo '### Hello world! :rocket:' >> $GITHUB_STEP_SUMMARY
