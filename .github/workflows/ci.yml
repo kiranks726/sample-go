@@ -103,4 +103,4 @@ jobs:
           lcov-file: "${{ github.workspace }}/reports/coverage/coverage.lcov"
           minimum-ratio: 0 # Fails Github action once code coverage is decreasing
           send-summary-comment: true
-          show-annotations: "warning" # Possible options warning|error
+          show-annotations: "error" # Possible options warning|error
