@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage line-rate="0.039215688" branch-rate="0" lines-covered="2" lines-valid="51" branches-covered="0" branches-valid="0" complexity="0" version="" timestamp="1652101977940">
+	<packages>
+		<package name="mainmodule/internal/apps/movies/services/movies" line-rate="0.039215688" branch-rate="0" complexity="0" line-count="51" line-hits="2">
+			<classes>
+				<class name="MovieService" filename="internal/apps/movies/services/movies/movie_service.go" line-rate="0.039215688" branch-rate="0" complexity="0" line-count="51" line-hits="2">
+					<methods>
+						<method name="DoTest" signature="" line-rate="1" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="21" hits="1"></line>
+								<line number="22" hits="1"></line>
+							</lines>
+						</method>
+						<method name="getDynamoDB" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="29" hits="0"></line>
+								<line number="34" hits="0"></line>
+								<line number="36" hits="0"></line>
+							</lines>
+						</method>
+						<method name="FindList" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="43" hits="0"></line>
+								<line number="46" hits="0"></line>
+								<line number="51" hits="0"></line>
+								<line number="54" hits="0"></line>
+								<line number="55" hits="0"></line>
+								<line number="56" hits="0"></line>
+								<line number="60" hits="0"></line>
+								<line number="62" hits="0"></line>
+								<line number="63" hits="0"></line>
+								<line number="65" hits="0"></line>
+								<line number="67" hits="0"></line>
+								<line number="68" hits="0"></line>
+								<line number="71" hits="0"></line>
+								<line number="74" hits="0"></line>
+							</lines>
+						</method>
+						<method name="FindOne" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="81" hits="0"></line>
+								<line number="84" hits="0"></line>
+								<line number="96" hits="0"></line>
+								<line number="97" hits="0"></line>
+								<line number="98" hits="0"></line>
+								<line number="102" hits="0"></line>
+								<line number="105" hits="0"></line>
+								<line number="107" hits="0"></line>
+								<line number="108" hits="0"></line>
+								<line number="111" hits="0"></line>
+							</lines>
+						</method>
+						<method name="CreateOne" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="119" hits="0"></line>
+								<line number="122" hits="0"></line>
+								<line number="123" hits="0"></line>
+								<line number="126" hits="0"></line>
+								<line number="127" hits="0"></line>
+								<line number="128" hits="0"></line>
+								<line number="129" hits="0"></line>
+								<line number="133" hits="0"></line>
+								<line number="139" hits="0"></line>
+								<line number="141" hits="0"></line>
+							</lines>
+						</method>
+						<method name="DeleteOne" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="148" hits="0"></line>
+								<line number="150" hits="0"></line>
+								<line number="160" hits="0"></line>
+								<line number="162" hits="0"></line>
+							</lines>
+						</method>
+						<method name="UpdateOne" signature="" line-rate="0" branch-rate="0" complexity="0" line-count="0" line-hits="0">
+							<lines>
+								<line number="170" hits="0"></line>
+								<line number="173" hits="0"></line>
+								<line number="174" hits="0"></line>
+								<line number="175" hits="0"></line>
+								<line number="176" hits="0"></line>
+								<line number="180" hits="0"></line>
+								<line number="186" hits="0"></line>
+								<line number="188" hits="0"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="21" hits="1"></line>
+						<line number="22" hits="1"></line>
+						<line number="29" hits="0"></line>
+						<line number="34" hits="0"></line>
+						<line number="36" hits="0"></line>
+						<line number="43" hits="0"></line>
+						<line number="46" hits="0"></line>
+						<line number="51" hits="0"></line>
+						<line number="54" hits="0"></line>
+						<line number="55" hits="0"></line>
+						<line number="56" hits="0"></line>
+						<line number="60" hits="0"></line>
+						<line number="62" hits="0"></line>
+						<line number="63" hits="0"></line>
+						<line number="65" hits="0"></line>
+						<line number="67" hits="0"></line>
+						<line number="68" hits="0"></line>
+						<line number="71" hits="0"></line>
+						<line number="74" hits="0"></line>
+						<line number="81" hits="0"></line>
+						<line number="84" hits="0"></line>
+						<line number="96" hits="0"></line>
+						<line number="97" hits="0"></line>
+						<line number="98" hits="0"></line>
+						<line number="102" hits="0"></line>
+						<line number="105" hits="0"></line>
+						<line number="107" hits="0"></line>
+						<line number="108" hits="0"></line>
+						<line number="111" hits="0"></line>
+						<line number="119" hits="0"></line>
+						<line number="122" hits="0"></line>
+						<line number="123" hits="0"></line>
+						<line number="126" hits="0"></line>
+						<line number="127" hits="0"></line>
+						<line number="128" hits="0"></line>
+						<line number="129" hits="0"></line>
+						<line number="133" hits="0"></line>
+						<line number="139" hits="0"></line>
+						<line number="141" hits="0"></line>
+						<line number="148" hits="0"></line>
+						<line number="150" hits="0"></line>
+						<line number="160" hits="0"></line>
+						<line number="162" hits="0"></line>
+						<line number="170" hits="0"></line>
+						<line number="173" hits="0"></line>
+						<line number="174" hits="0"></line>
+						<line number="175" hits="0"></line>
+						<line number="176" hits="0"></line>
+						<line number="180" hits="0"></line>
+						<line number="186" hits="0"></line>
+						<line number="188" hits="0"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+	</packages>
+	<sources>
+		<source>/workspaces/sample-go/backend/mainmodule</source>
+	</sources>
+</coverage>
