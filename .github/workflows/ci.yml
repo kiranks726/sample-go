@@ -64,14 +64,17 @@ jobs:
       #     version: 'latest'
       #     working-directory: ${{ github.workspace }}/backend/mainmodule
 
-      - name: Run test
-        run: make test
+      # - name: Run test
+      #   run: make test
 
-      # - name: Run diff to see infrastructure changes
-      #   run: |
-      #     echo "Github event ${{ github.event }}"
-      #     npx sst telemetry disable
-      #     npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
+      - name: Run diff to see infrastructure changes
+        run: |
+          echo "Github event ${{ github.event }}"
+          npx sst telemetry disable
+          # npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
+          npx sst diff --fail 
+          # && echo "no diffs found" || echo "diffs found"
+          echo "exit status code is: $?"
 
       # - name: Display infrastructure changes in Pull Request
       #   if: github.event_name == 'pull_request'
@@ -97,26 +100,26 @@ jobs:
 
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
           
-      - name: Display coverage metrics in Pull Request
-        if: github.event_name == 'pull_request'
-        uses: 5monkeys/cobertura-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
-          skip_covered: true
-          minimum_coverage: 1
-          fail_below_threshold: false
-          show_line: true
-          show_branch: true
-          show_class_names: true
-          show_missing: true
-          show_missing_max_length: true
-          link_missing_lines: false
-          link_missing_lines_source_dir: ${{ github.workspace }}/backend/mainmodule
-          only_changed_files: false
-          pull_request_number: false
-          report_name: Coverage Metrics
+      # - name: Display coverage metrics in Pull Request
+      #   if: github.event_name == 'pull_request'
+      #   uses: 5monkeys/cobertura-action@master
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
+      #     skip_covered: true
+      #     minimum_coverage: 1
+      #     fail_below_threshold: false
+      #     show_line: true
+      #     show_branch: true
+      #     show_class_names: true
+      #     show_missing: true
+      #     show_missing_max_length: true
+      #     link_missing_lines: false
+      #     #link_missing_lines_source_dir: ${{ github.workspace }}/backend/mainmodule
+      #     only_changed_files: false
+      #     pull_request_number: false
+      #     report_name: Coverage Metrics
     
-
-      # - name: Adding markdown
+      # - name: Add action summary
+      #   if: github.event_name == 'pull_request'
       #   run: echo '### Hello world! :rocket:' >> $GITHUB_STEP_SUMMARY
