@@ -105,44 +105,26 @@ jobs:
       #     send-summary-comment: true
       #     show-annotations: "" # Possible options warning|error
 
-      # - name: Add coverage report as comment on Pull Request
-      #   if: github.event_name == 'pull_request'
-      #   env:
-      #     PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
-      #     PR_URL: ${{ github.event.pull_request.html_url}}
-      #     COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-      #   run: |
-      #     output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
-      #     prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-      #     commitMessage=$(git --git-dir ${{ github.workspace }}/.git log --format=%B -n 1 HEAD^2)
-      #     commentWrapper="#### Coverage Report
-      #     <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
-      #     <details><summary>Show Output</summary>
-
-      #     \`\`\`
-      #     ${output}
-      #     \`\`\`
-
-      #     </details>
-      #     "
-      #     payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
-
-      #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
-
-      - name: Display coverage metrics in Pull Request
-        uses: 5monkeys/cobertura-action@master
-        with:
-          repo_token: ${{ secrets.TOKEN }}
-          path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
-          minimum_coverage: 1
-          fail_below_threshold: false
-          skip_covered: true
-          show_branch: true
-          show_line: true
-          show_class_names: true
-          show_missing: true
-          link_missing_lines: true
-          only_changed_files: false
+      - name: Add coverage report as job summary
+        if: github.event_name == 'pull_request'
+        run: |
+          output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
+          echo '$output' >> $GITHUB_STEP_SUMMARY
+          
+      # - name: Display coverage metrics in Pull Request
+      #   uses: 5monkeys/cobertura-action@master
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
+      #     minimum_coverage: 1
+      #     fail_below_threshold: false
+      #     skip_covered: true
+      #     show_branch: true
+      #     show_line: true
+      #     show_class_names: true
+      #     show_missing: true
+      #     link_missing_lines: true
+      #     only_changed_files: false
     
 
       # - name: Adding markdown
