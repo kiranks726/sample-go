@@ -16,10 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint
-    permissions: write-all
-      # id-token: write
-      # contents: read
-      # pull-requests: write
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      actions: write
        
 
     env:
@@ -72,7 +73,7 @@ jobs:
       #     npx sst telemetry disable
       #     npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
 
-      # - name: Add infrastructure changes as comment on Pull Request
+      # - name: Display infrastructure changes in Pull Request
       #   if: github.event_name == 'pull_request'
       #   env:
       #     PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
@@ -95,26 +96,9 @@ jobs:
       #     payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 
       #     echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
-
-      # - name: Generate Code Coverage report
-      #   if: github.event_name == 'pull_request'
-      #   uses: barecheck/code-coverage-action@v1
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     lcov-file: "${{ github.workspace }}/reports/coverage/coverage.lcov"
-      #     minimum-ratio: 0 # Fails Github action once code coverage is decreasing
-      #     send-summary-comment: true
-      #     show-annotations: "" # Possible options warning|error
-
-      # - name: Add coverage report as job summary
-      #   if: github.event_name == 'pull_request'
-      #   run: |
-      #     output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
-      #     echo "## Coverage Report
-      #     ${output}
-      #     " >> $GITHUB_STEP_SUMMARY
           
       - name: Display coverage metrics in Pull Request
+        if: github.event_name == 'pull_request'
         uses: 5monkeys/cobertura-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
