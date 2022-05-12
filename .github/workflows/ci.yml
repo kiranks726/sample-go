@@ -72,8 +72,8 @@ jobs:
           echo "Github event ${{ github.event }}"
           npx sst telemetry disable
           # npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
-          status = npx sst diff --stage dev
-          echo "exit status code is: $status"
+          npx sst diff --stage dev --fail true 2>&1
+          echo "exit status code is: $?"
 
       # - name: Display infrastructure changes in Pull Request
       #   if: github.event_name == 'pull_request'
