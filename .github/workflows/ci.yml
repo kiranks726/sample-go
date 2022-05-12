@@ -62,8 +62,8 @@ jobs:
       #     version: 'latest'
       #     working-directory: ${{ github.workspace }}/backend/mainmodule
 
-      # - name: Run test
-      #   run: make test
+      - name: Run test
+        run: make test
 
       # - name: Run diff to see infrastructure changes
       #   run: |
@@ -109,7 +109,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           output=$(cat ${{ github.workspace }}/reports/coverage/coverage_report_latest.html)
-          echo $output >> $GITHUB_STEP_SUMMARY
+          echo '$output' >> $GITHUB_STEP_SUMMARY
           
       # - name: Display coverage metrics in Pull Request
       #   uses: 5monkeys/cobertura-action@master
