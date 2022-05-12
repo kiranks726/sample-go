@@ -18,9 +18,9 @@ jobs:
     # These permissions are needed to interact with GitHub's OIDC Token endpoint
     permissions:
       id-token: write
-      contents: write
+      contents: read
       pull-requests: write
-      #actions: write
+      checks: write
        
 
     env:
@@ -112,6 +112,7 @@ jobs:
           show_missing: true
           link_missing_lines: false
           only_changed_files: false
+          report_name: Coverage Metrics
     
 
       # - name: Adding markdown
