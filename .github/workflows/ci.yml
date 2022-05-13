@@ -38,15 +38,16 @@ jobs:
           REPO: ${{ github.event.pull_request.head.repo.name }}
           REPO_URL: ${{ github.event.pull_request.head.repo.html_url }}
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-          SHORT_SHA: $(git rev-parse --short ${COMMIT_SHA})
           PR_URL: ${{ github.event.pull_request.html_url}}
         run: |
           prCommitUrl=${PR_URL}/commits/${COMMIT_SHA}
+          shortSha=$(git rev-parse --short ${COMMIT_SHA})
           echo "## Sources" >> $GITHUB_STEP_SUMMARY
           echo "|Repository|Commit sha|" >> $GITHUB_STEP_SUMMARY 
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
           echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-               "<a href='${prCommitUrl}'>${SHORT_SHA}</a>|" >> $GITHUB_STEP_SUMMARY
+               "<a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
                "as a comment with commit sha on the Pull request. Lints(if any) can be"\
                "found as annotations in the Files changed tab on the Pull request" >> $GITHUB_STEP_SUMMARY
