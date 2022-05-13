@@ -135,5 +135,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| - | :-: | :-: | :-: | :-: | :-: |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo | <a href="${repo_url}">${repo_name}</a> | <a href="${git_branch_url}">${git_branch}</a> | <a href="${pull_request_url}">${pull_request_number}</a> | <a href="${git_short_sha}">${git_pr_commit_url} | >> $GITHUB_STEP_SUMMARY
+          echo | <a href="${repo_url}">${repo_name}</a> | <a href="${git_branch_url}">${git_branch}</a> | <a href="${pull_request_url}">${pull_request_number}</a> | <a href="${git_short_sha}">${git_pr_commit_url}</a> | >> $GITHUB_STEP_SUMMARY
           
