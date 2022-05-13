@@ -42,12 +42,11 @@ jobs:
         run: |
           prCommitUrl=${PR_URL}/commits/${COMMIT_SHA}
           shortSha=$(git rev-parse --short ${COMMIT_SHA})
-          echo "## Sources 
-               |Repository|Commit sha|
-               |---|---|  
-               |<a href='${REPO_URL}'>${REPO}</a>|
-               <a href='${prCommitUrl}'>${shortSha}</a>|
-               " >> $GITHUB_STEP_SUMMARY
+          echo "## Sources"\
+               "|Repository|Commit sha|"\
+               "|---|---|"\  
+               "|<a href='${REPO_URL}'>${REPO}</a>|"\
+               "<a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
                "as a comment with commit sha on the Pull request. Lints(if any) can be"\
@@ -66,11 +65,11 @@ jobs:
       # - name: Install dependencies
       #   run: make install
 
-      # - name: Run lint and create annotations
-      #   uses: golangci/golangci-lint-action@v3
-      #   with:
-      #     version: 'latest'
-      #     working-directory: ${{ github.workspace }}/backend/mainmodule
+      - name: Run lint and create annotations
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: 'latest'
+          working-directory: ${{ github.workspace }}/backend/mainmodule
 
       # - name: Configure aws
       #   uses: aws-actions/configure-aws-credentials@v1
