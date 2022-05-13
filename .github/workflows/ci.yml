@@ -21,7 +21,6 @@ jobs:
       contents: read
       pull-requests: write
       checks: write
-       
 
     env:
       node-version: 16.14.0
@@ -81,7 +80,7 @@ jobs:
       #       echo "Skipping commenting on the Pull Request since there is no infrastructure changes"
       #     else
       #       prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
-      #       
+      #
       #       commentWrapper="#### Differences between the infrastructure specified in the current state of the app and the currently deployed application
       #       <a href="${prCommitUrl}">Commit: ${commitMessage}</a>
       #       <details><summary>Show Output</summary>
@@ -116,7 +115,7 @@ jobs:
       #     only_changed_files: false
       #     pull_request_number: false
       #     report_name: Coverage Metrics
-    
+
       - name: Add action summary
         if: github.event_name == 'pull_request'
         run: |
@@ -129,11 +128,11 @@ jobs:
           git_pr_commit_url=${{ github.event.pull_request.html_url}}/commits/${{ github.event.pull_request.head.sha }}
           pull_request_number=#${{ github.event.pull_request.number }}
           pull_request_url=${{ github.event.pull_request.html_url}}
-          
-          echo "##Sources" >> $GITHUB_STEP_SUMMARY
+
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
           echo "|Repository|Branch|PR|Commit sha|" >> $GITHUB_STEP_SUMMARY 
           echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY 
-          echo "|<a href='${repo_url}'>${repo_name}</a>|<a href='${git_branch_url}'>${git_branch}</a>|
-                <a href='${pull_request_url}'>${pull_request_number}</a>|<a href='${git_pr_commit_url}'>${git_short_sha}</a>|"
-                >> $GITHUB_STEP_SUMMARY
-          
+          echo "|<a href='${repo_url}'>${repo_name}</a>|"\
+               "<a href='${git_branch_url}'>${git_branch}</a>|"\
+               "<a href='${pull_request_url}'>${pull_request_number}</a>|"\
+               "<a href='${git_pr_commit_url}'>${git_short_sha}</a>|" >> $GITHUB_STEP_SUMMARY
