@@ -25,9 +25,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
+  
       - name: Setup Nodejs ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -43,8 +41,8 @@ jobs:
 
       - name: Run lint and create annotations in jobs summary
         uses: golangci/golangci-lint-action@v3
-        # TODO: Remove below parameter 
-        continue-on-error: true  
+        # TODO: Remove below parameter
+        continue-on-error: true
         with:
           version: "latest"
           working-directory: ${{ github.workspace }}/backend/mainmodule
