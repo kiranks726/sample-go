@@ -94,7 +94,7 @@ jobs:
             gitShortSha=$(git rev-parse --short ${COMMIT_SHA})
             prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
 
-            commentWrapper="### Differences between the infrastructure specified in the current state of the app and the currently deployed application
+            commentWrapper="#### Differences between the infrastructure specified in the current state of the app and the currently deployed application
             #### Generated against <a href="${prCommitUrl}">${gitShortSha}</a>
             <details><summary>Show Output</summary>
 
