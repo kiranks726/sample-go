@@ -42,14 +42,14 @@ jobs:
         run: |
           prCommitUrl=${PR_URL}/commits/${COMMIT_SHA}
           shortSha=$(git rev-parse --short ${COMMIT_SHA})
-          echo "## Sources\n
-               |Repository|Commit sha|\n
-               |---|---|\n  
-               |<a href='${REPO_URL}'>${REPO}</a>|\n
-               <a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
+          echo "|Repository|Commit sha|" >> $GITHUB_STEP_SUMMARY 
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+               "<a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
-               "as a comment with commit sha on the Pull request. Lints(if any) can be"\
+               "as a comment with commit sha on the Pull request. Lints(if any) can also be"\
                "found as annotations in the Files changed tab on the Pull request" >> $GITHUB_STEP_SUMMARY
 
       # - name: Setup Nodejs ${{ env.node-version }}
@@ -70,6 +70,7 @@ jobs:
         with:
           version: 'latest'
           working-directory: ${{ github.workspace }}/backend/mainmodule
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Configure aws
       #   uses: aws-actions/configure-aws-credentials@v1
