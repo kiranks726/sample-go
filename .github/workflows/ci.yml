@@ -131,10 +131,7 @@ jobs:
           pull_request_url=${{ github.event.pull_request.html_url}}
           
           echo "<strong>Source</strong>" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "|Repository|Branch|PR|Commit sha|" >> $GITHUB_STEP_SUMMARY 
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY 
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "|<a href='${repo_url}'>${repo_name}</a>|<a href='${git_branch_url}'>${git_branch}</a>|<a href='${pull_request_url}'>${pull_request_number}</a>|<a href='${git_short_sha}'>${git_pr_commit_url}</a>|" >> $GITHUB_STEP_SUMMARY
           
