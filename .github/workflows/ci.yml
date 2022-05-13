@@ -131,7 +131,5 @@ jobs:
           
           echo "<strong>Source</strong>" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Repository | Branch | PR | Commit sha |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| - | :-: | :-: | :-: | :-: | :-: |" >> $GITHUB_STEP_SUMMARY        
+          echo "| Repository | Branch | PR | Commit sha |" >> $GITHUB_STEP_SUMMARY 
           
