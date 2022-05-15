@@ -23,7 +23,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    environment: ${{ github.event.inputs.environment }}
+    #environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
@@ -33,7 +33,7 @@ jobs:
     env:
       node-version: 16.14.0
       go-version: 1.17
-      obj: ${{ github.event.inputs.branch }}
+      GITHUB_BRANCH: ${{ github.ref }}
 
     steps:
       - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
 
       - name: Check
         run: |
-          echo "Payload is: ${obj}"
+          echo "Branch is: "${GITHUB_REF#refs/heads/}""
 
       # - name: Setup Nodejs ${{ env.node-version }}
       #   uses: actions/setup-node@v3
