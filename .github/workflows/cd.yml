@@ -64,8 +64,8 @@ jobs:
 
       - name: Actions
         env:
-          REPO: ${{ github.repository.name }}
-          REPO_URL: ${{ github.repository.html_url }}
+          REPO: ${{ github.event.workflow_dispatch.repository.name }}
+          REPO_URL: ${{ github.event.workflow_dispatch.repository.html_url }}
           BRANCH_REF: ${{ github.ref }}
         run: |
           branch=${BRANCH_REF#refs/heads/}
