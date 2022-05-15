@@ -19,7 +19,7 @@ jobs:
 
   deploy:
     # The caller workflow cannot use GitHub-hosted runners from the called repository
-    needs: invoke-build
+    #needs: invoke-build
 
     runs-on: ubuntu-latest
 
