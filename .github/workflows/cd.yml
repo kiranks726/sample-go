@@ -14,16 +14,16 @@ on:
         required: true
 
 jobs:
-  # invoke-build:
-  #   uses: ./.github/workflows/ci.yml
+  invoke-build:
+    uses: ./.github/workflows/ci.yml
 
   deploy:
     # The caller workflow cannot use GitHub-hosted runners from the called repository
-    #needs: invoke-build
+    needs: invoke-build
 
     runs-on: ubuntu-latest
 
-    #environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
@@ -48,28 +48,26 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      # - name: Install dependencies
-      #   run: make install
+      - name: Install dependencies
+        run: make install
 
-      # - name: Configure aws
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-      #     role-session-name: GithubCDActions
-      #     aws-region: us-east-1
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          role-session-name: GithubCDActions
+          aws-region: us-east-1
 
-      # # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      # - name: Deploy stack
-      #   run: make deploy
+      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
+      - name: Deploy stack
+        run: make deploy
 
-      - name: Actions
+      - name: Add action summary
         env:
           REPO: ${{ github.event.repository.name }}
-          REPO_URL: ${{ github.event.repository.html_url }}
-          #BRANCH: ${{ github.ref.name }}
+          REPO_URL: ${{ github.event.repository.html_url }
         run: |
-          #branch=${BRANCH_REF#refs/heads/}
-          branchUrl=${REPO_URL}/tree/${branch}
+          branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
           echo "## Sources" >> $GITHUB_STEP_SUMMARY
           echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
