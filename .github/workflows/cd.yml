@@ -65,7 +65,7 @@ jobs:
       - name: Add action summary
         env:
           REPO: ${{ github.event.repository.name }}
-          REPO_URL: ${{ github.event.repository.html_url }
+          REPO_URL: ${{ github.event.repository.html_url }}
         run: |
           branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
           echo "## Sources" >> $GITHUB_STEP_SUMMARY
