@@ -66,12 +66,12 @@ jobs:
         env:
           REPO: ${{ github.event.repository.name }}
           REPO_URL: ${{ github.event.repository.html_url }}
-          BRANCH_REF: ${{ github.ref }}
+          BRANCH: ${{ github.ref.name }}
         run: |
-          branch=${BRANCH_REF#refs/heads/}
+          #branch=${BRANCH_REF#refs/heads/}
           branchUrl=${REPO_URL}/tree/${branch}
           echo "## Sources" >> $GITHUB_STEP_SUMMARY
           echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
           echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-                "<a href='${branchUrl}'>${branch}</a>|" >> $GITHUB_STEP_SUMMARY
+                "<a href='${branchUrl}'>${BRANCH}</a>|" >> $GITHUB_STEP_SUMMARY
