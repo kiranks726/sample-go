@@ -143,5 +143,5 @@ jobs:
             data = json.load(f)
             version = data["version"]
             if len(version.split('.')) != 3 :
-              raise ValueError("Version is not in semantic format")
+              sys.exit("Version is not in semantic format")
         shell: python
