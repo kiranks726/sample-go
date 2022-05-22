@@ -138,7 +138,7 @@ jobs:
         
       - name: Check if version is in semantic format
         run: |
-          import json
+          import sys, json
           with open("package.json", "r") as f:
             data = json.load(f)
             version = data["version"]
