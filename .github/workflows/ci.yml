@@ -172,6 +172,6 @@ jobs:
           tag=$(git tag -l "$VERSION")
           echo "Tag found is $tag"
           if [ ! -z "$tag" ]; then
-            echo "ERROR: git tag already exists 1>&2"
+            echo "ERROR: git tag already exists"
             exit 1
           fi
