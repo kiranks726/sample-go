@@ -172,3 +172,8 @@ jobs:
             echo "ERROR: git tag already exists 1>&2"
             exit 1
           fi
+          
+      - name: Create git tag
+        run: |
+          git tag 0.1.0 
+          git push origin --tags
