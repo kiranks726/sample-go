@@ -27,8 +27,8 @@ jobs:
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions: read-all|write-all
-      #id-token: write
-      #contents: read
+    #id-token: write
+    #contents: read
 
     env:
       NODE_VERSION: 16.14.0
