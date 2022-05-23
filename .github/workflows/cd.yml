@@ -26,7 +26,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions: read-all|write-all
+    permissions: write-all
     #id-token: write
     #contents: read
 
