@@ -60,13 +60,14 @@ jobs:
               "branch" : os.getenv("GITHUB_REF_NAME")
           }
             
-            json_object = json.dumps(pipeline_details, indent = 4)
+          json_object = json.dumps(pipeline_details, indent = 4)
               
-            # Writing to build_info.json
+          # Writing to build_info.json
             
-            with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
-                outfile.write(json_object)
-          
+          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+              outfile.write(json_object)
+        
+        shell: python  
 
       #- name: Setup Nodejs ${{ env.NODE_VERSION }}
         #uses: actions/setup-node@v3
