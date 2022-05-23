@@ -14,21 +14,21 @@ on:
         required: true
 
 jobs:
-  invoke-build:
-    uses: ./.github/workflows/ci.yml
+  #invoke-build:
+    #uses: ./.github/workflows/ci.yml
 
   deploy:
     # The caller workflow cannot use GitHub-hosted runners from the called repository
-    needs: invoke-build
+    #needs: invoke-build
 
     runs-on: ubuntu-latest
 
     environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions:
-      id-token: write
-      contents: read
+    permissions: read-all|write-all
+      #id-token: write
+      #contents: read
 
     env:
       NODE_VERSION: 16.14.0
