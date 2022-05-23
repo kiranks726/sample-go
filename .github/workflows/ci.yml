@@ -167,11 +167,11 @@ jobs:
             sys.exit("Version is not in CHANGELOG.md")
         shell: python
             
-      - name: Check if git tag already exists 
-        run: |
-          tag=$(git tag -l "$VERSION")
-          echo "Tag found is $tag"
-          if [ ! -z "$tag" ]; then
-            echo "ERROR: git tag already exists"
-            exit 1
-          fi
+      #- name: Check if git tag already exists 
+        #run: |
+          #tag=$(git tag -l "$VERSION")
+          #echo "Tag found is $tag"
+          #if [ ! -z "$tag" ]; then
+            #echo "ERROR: git tag already exists"
+            #exit 1
+          #fi
