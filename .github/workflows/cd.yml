@@ -26,9 +26,9 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions: write-all
-    #id-token: write
-    #contents: read
+    permissions:
+      id-token: write
+      contents: write
 
     env:
       NODE_VERSION: 16.14.0
@@ -95,8 +95,13 @@ jobs:
         
       - name: Create git tag
         run: |
-          git tag "$VERSION"
-          git push origin "$VERSION"
+          tag=$(git tag -l "$VERSION")
+          if [ ! -z "$tag" ]; then
+            git push origin "$VERSION"
+            echo "git tag $tag created"
+          else
+            echo "git tag $tag already exists"
+          fi
 
       - name: Add action summary
         env:
