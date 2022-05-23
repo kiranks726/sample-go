@@ -138,10 +138,31 @@ jobs:
         
       - name: Check if version is in semantic format
         run: |
-          import sys, json
+          import json
+          import os
+          import sys
           with open("package.json", "r") as f:
             data = json.load(f)
             version = data["version"]
             if len(version.split('.')) != 3 :
               sys.exit("Version is not in semantic format")
+            os.environ["VERSION"] = version
         shell: python
+        
+      - name: Check if version is in CHANGELOG.md
+        run: |
+          import os
+          version = os.getenv("VERSION")
+            
+          with open("CHANGELOG.md", "r") as f:
+            text = f.read()
+          if version not in text:
+            sys.exit("Version is not in CHANGELOG.md")
+        shell: python
+            
+      - name: Check if git tag already exists 
+        run: |
+          tag = $(git tag -l "$VERSION")
+          if [ ! -z "$tag" ]; then
+            echo "ERROR: git tag already exists 1>&2"
+            exit 1
