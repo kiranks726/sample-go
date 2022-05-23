@@ -156,6 +156,7 @@ jobs:
       - name: Check if version is in CHANGELOG.md
         run: |
           import os
+          import sys
           version = os.getenv("VERSION")
             
           with open("CHANGELOG.md", "r") as f:
