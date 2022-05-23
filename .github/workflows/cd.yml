@@ -28,7 +28,7 @@ jobs:
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
       id-token: write
-      contents: read
+      contents: write
 
     env:
       NODE_VERSION: 16.14.0
@@ -37,30 +37,74 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Setup Nodejs ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          fetch-depth: 0
+        
+      - name: Create Deploy Version Information file
+        run: |
+          import json, os
+          from datetime import datetime
+          
+          workspace_path = os.getenv("GITHUB_WORKSPACE")
+          with open(f"{workspace_path}/package.json", "r") as f:
+            data = json.load(f)
+            version = data["version"]
+            
+          env_file = os.getenv("GITHUB_ENV")
+          with open(env_file, "a") as f:
+            f.write(f"VERSION={version}")
+            
+          pipeline_details ={
+              "name" : os.getenv("GITHUB_WORKFLOW"),
+              "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "version" : version,
+              "runId" : os.getenv("GITHUB_RUN_ID"),                
+              "branch" : os.getenv("GITHUB_REF_NAME")
+          }
+            
+          json_object = json.dumps(pipeline_details, indent = 4)
+              
+          # Writing to build_info.json
+            
+          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+              outfile.write(json_object)
+        
+        shell: python  
 
-      - name: Setup Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GO_VERSION }}
+      #- name: Setup Nodejs ${{ env.NODE_VERSION }}
+        #uses: actions/setup-node@v3
+        #with:
+          #node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: make install
+      #- name: Setup Go ${{ env.GO_VERSION }}
+        #uses: actions/setup-go@v3
+        #with:
+          #go-version: ${{ env.GO_VERSION }}
 
-      - name: Configure aws
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          role-session-name: GithubCDActions
-          aws-region: us-east-1
+      #- name: Install dependencies
+        #run: make install
+
+      #- name: Configure aws
+        #uses: aws-actions/configure-aws-credentials@v1
+        #with:
+          #role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          #role-session-name: GithubCDActions
+          #aws-region: us-east-1
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      - name: Deploy stack
-        run: make deploy
+      #- name: Deploy stack
+        #run: make deploy
+        
+      - name: Create git tag
+        run: |
+          tag=$(git tag -l "$VERSION")
+          if [ -z "$tag" ]; then
+            git tag "$VERSION"
+            git push origin "$VERSION"
+            echo "git tag '$tag' created"
+          else
+            echo "git tag '$tag' already exists"
+          fi
 
       - name: Add action summary
         env:
