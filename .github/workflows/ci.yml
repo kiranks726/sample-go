@@ -167,7 +167,7 @@ jobs:
             
       - name: Check if git tag already exists 
         run: |
-          tag = $(git tag -l "$VERSION")
+          tag=$(git tag -l "$VERSION")
           if [ ! -z "$tag" ]; then
             echo "ERROR: git tag already exists 1>&2"
             exit 1
