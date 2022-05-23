@@ -146,7 +146,11 @@ jobs:
             version = data["version"]
             if len(version.split('.')) != 3 :
               sys.exit("Version is not in semantic format")
-            os.environ["VERSION"] = version
+            
+          env_file = os.getenv("GITHUB_ENV")
+          with open(env_file, "a") as f:
+            f.write(f"VERSION={version}")
+          
         shell: python
         
       - name: Check if version is in CHANGELOG.md
