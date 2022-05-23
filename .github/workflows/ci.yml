@@ -171,3 +171,4 @@ jobs:
           if [ ! -z "$tag" ]; then
             echo "ERROR: git tag already exists 1>&2"
             exit 1
+          fi
