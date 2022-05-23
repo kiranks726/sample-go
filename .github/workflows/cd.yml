@@ -96,8 +96,9 @@ jobs:
       - name: Create git tag
         run: |
           tag=$(git tag -l "$VERSION")
+          echo "Tag found is $tag"
           if [ -z "$tag" ]; then
-            git push origin "$VERSION"
+            git push origin $VERSION
             echo "git tag '$tag' created"
           else
             echo "git tag '$tag' already exists"
