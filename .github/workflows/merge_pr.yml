@@ -39,7 +39,7 @@ jobs:
           if [ -z "$tag" ]; then
             git tag "$VERSION"
             git push origin "$VERSION"
-            echo "git tag '$tag' created"
+            echo "git tag '$VERSION' created"
           else
             echo "git tag '$tag' already exists, deleting and tagging latest commit"
             git push --delete origin "$VERSION"
