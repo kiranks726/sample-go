@@ -1,0 +1,45 @@
+name: Merge Pull Request
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+  jobs:
+    git-tag:
+      # this job will only run if the PR has been merged
+      if: github.event.pull_request.merged == true
+      runs-on: ubuntu-latest
+    
+      steps:
+        - name: Read from version file
+          run: |
+            import json
+            import os
+            import sys
+
+            workspace_path = os.getenv("GITHUB_WORKSPACE")
+            with open(f"{workspace_path}/package.json", "r") as f:
+              data = json.load(f)
+              version = data["version"]
+              
+            env_file = os.getenv("GITHUB_ENV")
+            with open(env_file, "a") as f:
+              f.write(f"VERSION={version}")
+
+          shell: python
+
+        - name: Create tag if it does not exist, else delete existing and tag latest commit
+          run: |
+            tag=$(git tag -l "$VERSION")
+            if [ -z "$tag" ]; then
+              git tag "$VERSION"
+              git push origin "$VERSION"
+              echo "git tag '$tag' created"
+            else
+              echo "git tag '$tag' already exists, deleting and tagging latest commit"
+              git push --delete origin "$VERSION"
+              git tag "$VERSION"
+              git push origin "$VERSION"
+            fi
