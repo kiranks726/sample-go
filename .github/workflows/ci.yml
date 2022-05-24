@@ -2,8 +2,8 @@ name: Continuous Integration
 
 on:
   #push:
-    #branches:
-      #- "**"
+  #branches:
+  #- "**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop, feature/*]
@@ -135,7 +135,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-        
+
       - name: Check if version is in semantic format
         run: |
           import json
@@ -150,9 +150,9 @@ jobs:
           env_file = os.getenv("GITHUB_ENV")
           with open(env_file, "a") as f:
             f.write(f"VERSION={version}")
-          
+
         shell: python
-        
+
       - name: Check if version is in CHANGELOG.md
         run: |
           import os
@@ -164,4 +164,3 @@ jobs:
           if version not in text:
             sys.exit("Version is not in CHANGELOG.md")
         shell: python
-            
