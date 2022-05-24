@@ -37,10 +37,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Create Deploy Version Information file
+      - name: Create deploy version information file
         run: |
           import json, os
           from datetime import datetime
@@ -49,6 +47,10 @@ jobs:
           with open(f"{workspace_path}/package.json", "r") as f:
             data = json.load(f)
             version = data["version"]
+            
+          env_file = os.getenv("GITHUB_ENV")
+          with open(env_file, "a") as f:
+            f.write(f"VERSION={version}")
             
           pipeline_details = {
             "name" : os.getenv("GITHUB_WORKFLOW"),
@@ -90,6 +92,12 @@ jobs:
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       #- name: Deploy stack
       #run: make deploy
+      
+      - name: Create git tag
+        run: |
+            git tag "$VERSION"
+            git push origin "$VERSION"
+            echo "git tag '$VERSION' created"
 
       - name: Add action summary
         env:
