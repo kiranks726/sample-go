@@ -32,12 +32,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check tag that is checked out
-        run: |
-          tag=$(git tag -l "0.1.0")
-          echo "Tag checked out is $tag"
-
-      - name: Create Deploy Version Information file
+      - name: Create deploy version information file
         run: |
           import json, os
           from datetime import datetime
