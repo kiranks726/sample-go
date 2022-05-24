@@ -44,6 +44,7 @@ jobs:
             echo "git tag '$VERSION' created"
           else
             echo "git tag '$tag' already exists, deleting and tagging latest commit"
+            git tag --delete "$VERSION"
             git push --delete origin "$VERSION"
             git tag "$VERSION"
             git push origin "$VERSION"
