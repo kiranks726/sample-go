@@ -16,12 +16,7 @@ and *Component Metadata* adheres to [Semantic Versioning](https://semver.org/spe
 - Uses DAL package to manage component contracts used by designer
 - Netlist component parameterizes python netlist from blob and returns SPICE netlist in json
 
-## [1.0.1] - 2022-01-13
+## [0.2.0] - 2022-01-13
 
 - Added People Detection Metadata
 - Endpoint to get People Detection Metadata to load as initial state on the UI
-
-## [1.0.2] - 2022-01-18
-
-- Modified People Detection Metadata Component to be a generic App Metadata Component
-- appId is used as a path parameter to load initial state of particular application on the UI
