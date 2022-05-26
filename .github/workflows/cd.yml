@@ -88,7 +88,12 @@ jobs:
       #     role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
       #     role-session-name: GithubCDActions
       #     aws-region: us-east-1
-
+      
+      - name: Before downloaded artfacts
+        run: |
+          echo "List contents before downloading artifacts"
+          ls
+  
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with: 
@@ -97,10 +102,17 @@ jobs:
           name: sample-go
           path: ${{ github.workspace }}/.build/
 
-      - name: Check downloaded artfacts
+      - name: After downloaded artfacts
         run: |
-          echo "Current path is:"
-          pwd
+          echo "List contents after downloading artifacts"
+          ls
+
+      - name: Go into build directory and list
+        run: |
+          echo "Change directory to build"
+          cd .build
+          echo "List contens inside .build"
+          ls
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       #- name: Deploy stack
