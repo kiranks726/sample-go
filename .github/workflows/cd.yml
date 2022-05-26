@@ -14,12 +14,12 @@ on:
         required: true
 
 jobs:
-  invoke-build:
-    uses: ./.github/workflows/ci.yml
+  # invoke-build:
+  #   uses: ./.github/workflows/ci.yml
 
   deploy:
     # The caller workflow cannot use GitHub-hosted runners from the called repository
-    needs: invoke-build
+    # needs: invoke-build
 
     runs-on: ubuntu-latest
 
@@ -30,83 +30,96 @@ jobs:
       id-token: write
       contents: write
 
-    env:
-      NODE_VERSION: 16.14.0
-      GO_VERSION: 1.17
+    # env:
+    #   NODE_VERSION: 16.14.0
+    #   GO_VERSION: 1.17
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # - name: Checkout code
+      #   uses: actions/checkout@v3
 
-      - name: Create deploy version information file
-        run: |
-          import json, os
-          from datetime import datetime
+      # - name: Create deploy version information file
+      #   run: |
+      #     import json, os
+      #     from datetime import datetime
 
-          workspace_path = os.getenv("GITHUB_WORKSPACE")
-          with open(f"{workspace_path}/package.json", "r") as f:
-            data = json.load(f)
-            version = data["version"]
+      #     workspace_path = os.getenv("GITHUB_WORKSPACE")
+      #     with open(f"{workspace_path}/package.json", "r") as f:
+      #       data = json.load(f)
+      #       version = data["version"]
             
-          env_file = os.getenv("GITHUB_ENV")
-          with open(env_file, "a") as f:
-            f.write(f"VERSION={version}")
+      #     env_file = os.getenv("GITHUB_ENV")
+      #     with open(env_file, "a") as f:
+      #       f.write(f"VERSION={version}")
             
-          pipeline_details = {
-            "name" : os.getenv("GITHUB_WORKFLOW"),
-            "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "version" : version,
-            "runId" : os.getenv("GITHUB_RUN_ID"),                
-            "branch" : os.getenv("GITHUB_REF_NAME")
-          }
+      #     pipeline_details = {
+      #       "name" : os.getenv("GITHUB_WORKFLOW"),
+      #       "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+      #       "version" : version,
+      #       "runId" : os.getenv("GITHUB_RUN_ID"),                
+      #       "branch" : os.getenv("GITHUB_REF_NAME")
+      #     }
             
-          json_object = json.dumps(pipeline_details, indent = 4)
+      #     json_object = json.dumps(pipeline_details, indent = 4)
               
-          # Writing to build_info.json
+      #     # Writing to build_info.json
             
-          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
-              outfile.write(json_object)
+      #     with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+      #         outfile.write(json_object)
 
-        shell: python
+      #   shell: python
 
-      - name: Setup Nodejs ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+      # - name: Setup Nodejs ${{ env.NODE_VERSION }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
 
-      - name: Setup Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GO_VERSION }}
+      # - name: Setup Go ${{ env.GO_VERSION }}
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: ${{ env.GO_VERSION }}
 
-      - name: Install dependencies
-        run: make install
+      # - name: Install dependencies
+      #   run: make install
 
-      - name: Configure aws
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          role-session-name: GithubCDActions
-          aws-region: us-east-1
+      # - name: Configure aws
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+      #     role-session-name: GithubCDActions
+      #     aws-region: us-east-1
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: ./.github/workflows/ci.yml
+          name: sample-go
+          path: ${{ github.workspace }}/.build/
+
+      - name: Check downloaded artfacts
+        run: |
+          echo "Current path is:"
+          pwd
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       #- name: Deploy stack
       #run: make deploy
       
-      - name: Create git tag
-        run: |
-            git tag "$VERSION"
-            git push origin "$VERSION"
-            echo "git tag '$VERSION' created"
+      # - name: Create git tag
+      #   run: |
+      #       git tag "$VERSION"
+      #       git push origin "$VERSION"
+      #       echo "git tag '$VERSION' created"
 
-      - name: Add action summary
-        env:
-          REPO: ${{ github.event.repository.name }}
-          REPO_URL: ${{ github.event.repository.html_url }}
-        run: |
-          branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
-          echo "## Sources" >> $GITHUB_STEP_SUMMARY
-          echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
-          echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
-          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-                "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
+      # - name: Add action summary
+      #   env:
+      #     REPO: ${{ github.event.repository.name }}
+      #     REPO_URL: ${{ github.event.repository.html_url }}
+      #   run: |
+      #     branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
+      #     echo "## Sources" >> $GITHUB_STEP_SUMMARY
+      #     echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
+      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+      #     echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+      #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
