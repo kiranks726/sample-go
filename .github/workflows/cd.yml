@@ -121,7 +121,7 @@ jobs:
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       - name: Deploy stack
-        run: npx sst deploy --stage dev
+        run: npx sst deploy --stage dev --region us-east-1
       
       # - name: Create git tag
       #   run: |
