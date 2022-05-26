@@ -5,7 +5,7 @@ export default class Moviestack extends sst.Stack {
     super(scope, id, props);
 
     // Create the DynamoDB table
-    const moviesTable = new sst.Table(this, "movies", {
+    const moviesTable = new sst.Table(this, "newmovies", {
       fields: {
         Id: sst.TableFieldType.STRING,
       },
