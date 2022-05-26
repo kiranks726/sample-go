@@ -23,7 +23,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    environment: ${{ github.event.inputs.environment }}
+    #environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
@@ -93,7 +93,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: ./.github/workflows/ci.yml
+          workflow: ci.yml
           name: sample-go
           path: ${{ github.workspace }}/.build/
 
