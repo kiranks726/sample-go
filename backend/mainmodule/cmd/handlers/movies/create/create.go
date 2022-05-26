@@ -37,7 +37,7 @@ func Handler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	// Marshal item to return
 	itemJSON, err := json.Marshal(item)
 	if err != nil {
-		log.Error().Err(err).Msg("Got error marshalling result")
+		log.Error().Err(err).Msg("Got error marshalling result event")
 		return events.APIGatewayProxyResponse{StatusCode: http.StatusInternalServerError}, nil
 	}
 
