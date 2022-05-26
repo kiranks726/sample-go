@@ -105,7 +105,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: ci.yml
           name: sample-go
-          path: ${{ github.workspace }}/.build/
+          path: ${{ github.workspace }}
 
       # - name: After downloaded artfacts
       #   run: |
@@ -120,8 +120,8 @@ jobs:
       #     ls
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      - name: Deploy stack
-        run: npx sst deploy --stage dev --region us-east-1
+      # - name: Deploy stack
+      #   run: npx sst deploy --stage dev --region us-east-1
       
       # - name: Create git tag
       #   run: |
