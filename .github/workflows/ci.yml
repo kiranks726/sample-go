@@ -1,9 +1,9 @@
 name: Continuous Integration
 
 on:
-  # push:
-  #   branches:
-  #     - "**"
+  push:
+    branches:
+      - "**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop, feature/*]
@@ -135,7 +135,8 @@ jobs:
           name: sample-go
           path: |
             ${{ github.workspace }}/.build/
-            ${{ github.workspace }}/sst.json
+            ${{ github.workspace }}/.sst/
+        # ${{ github.workspace }}/sst.json
       
   # validate-version:
   #   runs-on: ubuntu-latest
