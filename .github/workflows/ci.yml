@@ -62,8 +62,8 @@ jobs:
       - name: Synthesize stack
         run: make build
 
-      - name: Run test
-        run: make test
+      # - name: Run test
+      #   run: make test
 
       - name: Display coverage metrics in Pull Request and jobs summary
         if: github.event_name == 'pull_request'
@@ -133,7 +133,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: sample-go
-          path: ${{ github.workspace }}/.build
+          path: ${{ github.workspace }}/.build/
       
   # validate-version:
   #   runs-on: ubuntu-latest
