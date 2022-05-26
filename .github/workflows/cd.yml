@@ -30,8 +30,8 @@ jobs:
       id-token: write
       contents: write
 
-    # env:
-    #   NODE_VERSION: 16.14.0
+    env:
+      NODE_VERSION: 16.14.0
     #   GO_VERSION: 1.17
 
     steps:
@@ -69,10 +69,14 @@ jobs:
 
       #   shell: python
 
-      # - name: Setup Nodejs ${{ env.NODE_VERSION }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
+      - name: Setup Nodejs ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install sst and its dependencies
+        run: |
+          npm i @serverless-stack/cli
 
       # - name: Setup Go ${{ env.GO_VERSION }}
       #   uses: actions/setup-go@v3
