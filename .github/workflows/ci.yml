@@ -1,6 +1,9 @@
 name: Continuous Integration
 
 on:
+  push:
+    branches:
+      - "**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop, feature/*]
@@ -39,13 +42,13 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Run lint and create annotations in jobs summary
-        uses: golangci/golangci-lint-action@v3
-        # TODO: Remove below parameter
-        continue-on-error: true
-        with:
-          version: "latest"
-          working-directory: ${{ github.workspace }}/backend/mainmodule
+      # - name: Run lint and create annotations in jobs summary
+      #   uses: golangci/golangci-lint-action@v3
+      #   # TODO: Remove below parameter
+      #   continue-on-error: true
+      #   with:
+      #     version: "latest"
+      #     working-directory: ${{ github.workspace }}/backend/mainmodule
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
@@ -125,50 +128,56 @@ jobs:
           echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
                 "as a comment with commit sha on the Pull request. Lints(if any) can also be"\
                 "found as annotations in the Files changed tab on the Pull request" >> $GITHUB_STEP_SUMMARY
-
-  validate-version:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    
+      - name: Upload build to artifact
+        uses: actions/upload-artifact@v3
         with:
-          fetch-depth: 0
+          name: sample-go
+          path: ${{ github.workspace }}/.build
+      
+  # validate-version:
+  #   runs-on: ubuntu-latest
 
-      - name: Check if version is in semantic format
-        run: |
-          import json
-          import os
-          import sys
-          with open("package.json", "r") as f:
-            data = json.load(f)
-            version = data["version"]
-            if len(version.split('.')) != 3 :
-              sys.exit("Version is not in semantic format")
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Check if version is in semantic format
+  #       run: |
+  #         import json
+  #         import os
+  #         import sys
+  #         with open("package.json", "r") as f:
+  #           data = json.load(f)
+  #           version = data["version"]
+  #           if len(version.split('.')) != 3 :
+  #             sys.exit("Version is not in semantic format")
             
-          env_file = os.getenv("GITHUB_ENV")
-          with open(env_file, "a") as f:
-            f.write(f"VERSION={version}")
+  #         env_file = os.getenv("GITHUB_ENV")
+  #         with open(env_file, "a") as f:
+  #           f.write(f"VERSION={version}")
 
-        shell: python
+  #       shell: python
 
-      - name: Check if version is in CHANGELOG.md
-        run: |
-          import os
-          import sys
-          version = os.getenv("VERSION")
+  #     - name: Check if version is in CHANGELOG.md
+  #       run: |
+  #         import os
+  #         import sys
+  #         version = os.getenv("VERSION")
             
-          with open("CHANGELOG.md", "r") as f:
-            text = f.read()
-          if version not in text:
-            sys.exit("Version is not in CHANGELOG.md")
-        shell: python
+  #         with open("CHANGELOG.md", "r") as f:
+  #           text = f.read()
+  #         if version not in text:
+  #           sys.exit("Version is not in CHANGELOG.md")
+  #       shell: python
 
-      - name: Check if git tag already exists
-        run: |
-          tag=$(git tag -l "$VERSION")
-          echo "Tag found is $tag"
-          if [ ! -z "$tag" ]; then
-            echo "ERROR: git tag already exists"
-            exit 1
-          fi
+  #     - name: Check if git tag already exists
+  #       run: |
+  #         tag=$(git tag -l "$VERSION")
+  #         echo "Tag found is $tag"
+  #         if [ ! -z "$tag" ]; then
+  #           echo "ERROR: git tag already exists"
+  #           exit 1
+  #         fi
