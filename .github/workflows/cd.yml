@@ -35,8 +35,8 @@ jobs:
       GO_VERSION: 1.17
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # - name: Checkout code
+      #   uses: actions/checkout@v3
 
       # - name: Create deploy version information file
       #   run: |
@@ -74,17 +74,17 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # - name: Install sst and its dependencies
-      #   run: |
-      #     npm i @serverless-stack/cli
+      - name: Install cdk and its dependencies
+        run: |
+          npm i aws-cdk
 
-      - name: Setup Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GO_VERSION }}
+      # - name: Setup Go ${{ env.GO_VERSION }}
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: ${{ env.GO_VERSION }}
 
-      - name: Install dependencies
-        run: make install
+      # - name: Install dependencies
+      #   run: make install
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
@@ -121,7 +121,7 @@ jobs:
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
       - name: Deploy stack
-        run: make deploy
+        run: cdk deploy
       
       # - name: Create git tag
       #   run: |

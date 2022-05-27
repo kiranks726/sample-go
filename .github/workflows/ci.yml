@@ -134,8 +134,8 @@ jobs:
         with:
           name: sample-go
           path: |
-            ${{ github.workspace }}/.build/cdk.out
-            ${{ github.workspace }}/CHANGELOG.md
+            ${{ github.workspace }}/.build/cdk.out/
+          # ${{ github.workspace }}/CHANGELOG.md
           # ${{ github.workspace }}/sst.json
       
   # validate-version:
