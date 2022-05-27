@@ -10,6 +10,7 @@
     "remove": "sst remove",
     "diff": "sst diff"
   },
+  "type": "module",
   "eslintConfig": {
     "extends": [
       "serverless-stack"
