@@ -1,9 +1,9 @@
 name: Continuous Integration
 
 on:
-  # push:
-  #   branches:
-  #     - "**"
+  push:
+    branches:
+      - "**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop, feature/*]
@@ -137,6 +137,7 @@ jobs:
           name: sample-go
           path: |
             ${{ github.workspace }}/cdk.out/
+            ${{ github.workspace }}/cdk.json
           # ${{ github.workspace }}/CHANGELOG.md
           # ${{ github.workspace }}/sst.json
       
