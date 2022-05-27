@@ -76,7 +76,7 @@ jobs:
 
       - name: Install cdk and its dependencies
         run: |
-          npm i aws-cdk
+          npm install -g aws-cdk
 
       # - name: Setup Go ${{ env.GO_VERSION }}
       #   uses: actions/setup-go@v3
