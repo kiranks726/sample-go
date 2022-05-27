@@ -1,9 +1,9 @@
 name: Continuous Integration
 
 on:
-  # push:
-  #   branches:
-  #     - "**"
+  push:
+    branches:
+      - "**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master, release/*, develop, feature/*]
