@@ -1,29 +1,20 @@
 {
-  "name": "ctx-kitchensink-go",
-  "version": "0.2.0",
-  "private": true,
+  "name": "hello-cdk",
+  "version": "0.1.0",
+  "bin": {
+    "hello-cdk": "bin/hello-cdk.js"
+  },
   "scripts": {
-    "test": "sst test",
-    "start": "sst start",
-    "build": "sst build",
-    "deploy": "sst deploy",
-    "remove": "sst remove",
-    "diff": "sst diff"
-  },
-  "type": "module",
-  "eslintConfig": {
-    "extends": [
-      "serverless-stack"
-    ]
-  },
-  "dependencies": {
-    "@serverless-stack/cli": "^0.67.0",
-    "@serverless-stack/resources": "0.67.0",
-    "aws-cdk": "^2.25.0",
-    "aws-cdk-lib": "2.7.0"
+    "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
+    "cdk": "cdk",
+    "test": "jest"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
-    "xunit-viewer": "^7.1.5"
+    "aws-cdk": "2.15.0",
+    "jest": "^26.4.2"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.15.0",
+    "constructs": "^10.0.0"
   }
 }

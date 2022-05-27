@@ -23,7 +23,7 @@ jobs:
 
     env:
       NODE_VERSION: 16.14.0
-      GO_VERSION: 1.17
+      # GO_VERSION: 1.17
 
     steps:
       - name: Checkout code
@@ -34,10 +34,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Setup Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ env.GO_VERSION }}
+      # - name: Setup Go ${{ env.GO_VERSION }}
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: ${{ env.GO_VERSION }}
 
       - name: Install dependencies
         run: make install
@@ -60,7 +60,7 @@ jobs:
       # This generates Cloud formation template which is referenced by the sst unit test cases.
       # The generated Cloud formation template is only used for running tests against and not deployed.
       - name: Synthesize stack
-        run: npx sst build --stage dev
+        run: cdk synth
 
       # - name: Run test
       #   run: make test
@@ -134,7 +134,7 @@ jobs:
         with:
           name: sample-go
           path: |
-            ${{ github.workspace }}/.build/cdk.out/
+            ${{ github.workspace }}/cdk.out/
           # ${{ github.workspace }}/CHANGELOG.md
           # ${{ github.workspace }}/sst.json
       
