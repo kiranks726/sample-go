@@ -170,3 +170,30 @@ jobs:
             echo "ERROR: Git tag already exists"
             exit 1
           fi
+          
+      - name:  Check if tag has the right sequential format
+        run: |
+          ver=$(git describe --tags `git rev-list --tags --max-count=1`)
+          baseline='N'
+          if ! [[ $ver >/dev/null ]]; then
+            echo "Error: Git tag need to baselined first"
+          else
+            baseline='Y'
+          fi 
+          if [[ $baseline == 'Y' ]]; then
+          t_current_version=`echo $(current_version)`
+          no_sequence=`python3 -c "
+          import semantic_version
+          v = semantic_version.Version('''$ver''')
+          v_major = v.next_major()
+          v_minor = v.next_minor()
+          v_patch = v.next_patch()
+          if('''$t_current_version''' != str(v_major) and '''$t_current_version''' != str(v_minor) and '''$t_current_version''' != str(v_patch)):              
+            print('Y')
+          else:
+            print('N')"`            
+          if [[ $no_sequence != "N" ]]; then
+            echo "Error: Version not in sequential format"
+            exit 1
+          fi
+          fi
