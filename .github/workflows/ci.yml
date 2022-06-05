@@ -59,13 +59,14 @@ jobs:
           
       - name:  Check if tag has the right sequential format
         run: |
-          ver=$(git describe --tags `git rev-list --tags --max-count=1`)
+          #ver=$(git describe --tags `git rev-list --tags --max-count=1`)
           baseline='N'
-          if [[ ! $ver >& /dev/null ]]; then
+          if [ ! $(git describe --tags `git rev-list --tags --max-count=1`) &> /dev/null ]; then
             echo "Error: Git tag need to baselined first"
             exit 1
           else
             baseline='Y'
+            ver=$(git describe --tags `git rev-list --tags --max-count=1`)
           fi
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
