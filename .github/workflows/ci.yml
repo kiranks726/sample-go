@@ -61,8 +61,9 @@ jobs:
         run: |
           ver=$(git describe --tags `git rev-list --tags --max-count=1`)
           baseline='N'
-          if [[ ! $ver >/dev/null ]]; then
+          if [[ ! $ver >& /dev/null ]]; then
             echo "Error: Git tag need to baselined first"
+            exit 1
           else
             baseline='Y'
           fi
