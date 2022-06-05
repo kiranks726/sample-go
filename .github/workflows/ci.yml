@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [master, release/*, develop, feature/*]
+    branches: [master, release/*, develop]
 
 jobs:
   
