@@ -69,7 +69,7 @@ jobs:
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
           if [[ $baseline == 'Y' ]]; then
-            t_current_version=`echo $(version)`
+            t_current_version=`echo ${version}`
             echo "t_current_version is: ${t_current_version}"
             no_sequence=`python3 -c "
             import semantic_version
