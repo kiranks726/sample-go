@@ -45,7 +45,7 @@ jobs:
           import json, os
 
           read_version = configparser.ConfigParser()
-          read_version.read('VERSION.ini')
+          read_version.read("VERSION.ini")
           version = read_version.get('APP', 'version')
             
           env_file = os.getenv("GITHUB_ENV")
@@ -63,7 +63,7 @@ jobs:
           json_object = json.dumps(pipeline_details, indent = 4)
               
           # Writing to build_info.json
-            
+          workspace_path = os.getenv("GITHUB_WORKSPACE")
           with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
               outfile.write(json_object)
 
