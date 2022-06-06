@@ -1,0 +1,30 @@
+name: Merge Pull Request
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  git-tag:
+    # this job will only run if the PR has been merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Create git tag
+        run: |
+          vers=`python3 -c "
+          import configparser
+          read_version = configparser.ConfigParser()
+          read_version.read('VERSION.ini')
+          version = read_version.get('APP', 'version')
+          print(version)"`
+          
+          git tag "$vers"
+          git push origin "$vers"
+          echo "git tag '$vers' created"
