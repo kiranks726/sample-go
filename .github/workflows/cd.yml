@@ -34,14 +34,14 @@ jobs:
 
       - name: Create deploy version information file
         run: |
-          import json, os
+          import configparser
           from datetime import datetime
+          import json, os
+          
+          read_version = configparser.ConfigParser()
+          read_version.read('VERSION.ini')
+          version = read_version.get('APP', 'version')
 
-          workspace_path = os.getenv("GITHUB_WORKSPACE")
-          with open(f"{workspace_path}/package.json", "r") as f:
-            data = json.load(f)
-            version = data["version"]
-            
           pipeline_details ={
             "name" : os.getenv("GITHUB_WORKFLOW"),
             "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
