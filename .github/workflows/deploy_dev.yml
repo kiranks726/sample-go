@@ -83,7 +83,7 @@ jobs:
 
   Validate-Version:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    #continue-on-error: true
 
     steps:
       - name: Checkout code
