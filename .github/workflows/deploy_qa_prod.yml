@@ -11,12 +11,16 @@ on:
           - qa
           - prod
         required: true
+      version:
+        Version: 
+        required: true
+        type: text
 
 jobs:
-  deploy:
+  Deploy:
     runs-on: ubuntu-latest
 
-    #environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}
 
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
@@ -30,69 +34,67 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.version }}
 
-      - name: Check
+      - name: Create deploy version information file
         run: |
-          ls
-
-      # - name: Create deploy version information file
-      #   run: |
-      #     import configparser
-      #     from datetime import datetime
-      #     import json, os
+          import configparser
+          from datetime import datetime
+          import json, os
           
-      #     read_version = configparser.ConfigParser()
-      #     read_version.read("VERSION.ini")
-      #     version = read_version.get('APP', 'version')
+          read_version = configparser.ConfigParser()
+          read_version.read("VERSION.ini")
+          version = read_version.get('APP', 'version')
 
-      #     pipeline_details ={
-      #       "name" : os.getenv("GITHUB_WORKFLOW"),
-      #       "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-      #       "version" : version,
-      #       "runId" : os.getenv("GITHUB_RUN_ID"),                
-      #       "branch" : os.getenv("GITHUB_REF_NAME")
-      #     }
+          pipeline_details ={
+            "name" : os.getenv("GITHUB_WORKFLOW"),
+            "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "version" : version,
+            "runId" : os.getenv("GITHUB_RUN_ID"),                
+            "branch" : os.getenv("GITHUB_REF_NAME")
+          }
             
-      #     json_object = json.dumps(pipeline_details, indent = 4)
-      #     workspace_path = os.getenv("GITHUB_WORKSPACE")
+          json_object = json.dumps(pipeline_details, indent = 4)
+          workspace_path = os.getenv("GITHUB_WORKSPACE")
             
-      #     with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
-      #         outfile.write(json_object)
+          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+              outfile.write(json_object)
 
-      #   shell: python
+        shell: python
 
-      # - name: Setup Nodejs ${{ env.NODE_VERSION }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
+      - name: Setup Nodejs ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-      # - name: Setup Go ${{ env.GO_VERSION }}
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: ${{ env.GO_VERSION }}
+      - name: Setup Go ${{ env.GO_VERSION }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
-      # - name: Install dependencies
-      #   run: make install
+      - name: Install dependencies
+        run: make install
 
-      # - name: Configure aws
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-      #     role-session-name: GithubCDActions
-      #     aws-region: us-east-1
+      - name: Configure aws
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          role-session-name: GithubCDActions
+          aws-region: us-east-1
 
-      # # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      # #- name: Deploy stack
-      #   #run: make deploy
+      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
+      # - name: Deploy stack
+      #   run: make deploy
 
-      # - name: Add action summary
-      #   env:
-      #     REPO: ${{ github.event.repository.name }}
-      #     REPO_URL: ${{ github.event.repository.html_url }}
-      #   run: |
-      #     branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
-      #     echo "## Sources" >> $GITHUB_STEP_SUMMARY
-      #     echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
-      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
-      #     echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-      #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
+      - name: Add action summary
+        env:
+          REPO: ${{ github.event.repository.name }}
+          REPO_URL: ${{ github.event.repository.html_url }}
+        run: |
+          branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
+          echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+                "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
