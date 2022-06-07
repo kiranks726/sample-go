@@ -79,7 +79,7 @@ jobs:
           aws-region: us-east-1
 
       # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      # - name: Deploy stack
+      # -name: Deploy stack
       #   run: make deploy
 
       - name: Add action summary
