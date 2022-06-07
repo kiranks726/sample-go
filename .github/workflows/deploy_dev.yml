@@ -36,7 +36,7 @@ jobs:
           version = read_version.get('APP', 'version')
 
           commit_sha = os.getenv("GITHUB_SHA")
-          short_hash = commit_sha[:8]
+          short_hash = commit_sha[:7]
           run_id = os.getenv("GITHUB_RUN_ID")
           dev_version = f"{version}-{short_hash}-{run_id}"
           print("Here is the dev version:", dev_version)
