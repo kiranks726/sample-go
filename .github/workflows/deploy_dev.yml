@@ -30,16 +30,15 @@ jobs:
           import configparser
           from datetime import datetime
           import json, os
-          import subprocess
           
           read_version = configparser.ConfigParser()
           read_version.read("VERSION.ini")
           version = read_version.get('APP', 'version')
 
           commit_sha = os.getenv("GITHUB_SHA")
-          # short_hash = subprocess.check_output(['git', 'rev-parse', '--short', ${GITHUB_SHA}]
+          short_hash = commit_sha[:8]
           run_id = os.getenv("GITHUB_RUN_ID")
-          dev_version = f"{version}-{commit_sha}-{run_id}"
+          dev_version = f"{version}-{short_hash}-{run_id}"
           print("Here is the dev version:", dev_version)
 
           pipeline_details ={
