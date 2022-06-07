@@ -30,14 +30,16 @@ jobs:
           import configparser
           from datetime import datetime
           import json, os
+          import subprocess
           
           read_version = configparser.ConfigParser()
           read_version.read("VERSION.ini")
           version = read_version.get('APP', 'version')
 
           commit_sha = os.getenv("GITHUB_SHA")
+          short_hash = subprocess.check_output(['git', 'rev-parse', '--short', ${GITHUB_SHA}]
           run_id = os.getenv("GITHUB_RUN_ID")
-          dev_version = f"{version}-{commit_sha}-{run_id}"
+          dev_version = f"{version}-{short_hash}-{run_id}"
           print("Here is the dev version:", dev_version)
 
           pipeline_details ={
@@ -89,6 +91,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check if version is in semantic format
+        continue-on-error: true
         id: version_semantic
         run: |
           pip install semantic_version
@@ -109,6 +112,7 @@ jobs:
           echo "::set-output name=version::$vers"
 
       - name: Check if version is in ChangeLog file
+        continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -119,6 +123,7 @@ jobs:
           fi
 
       - name: Check if git tag already exists
+        continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -129,6 +134,7 @@ jobs:
           fi
 
       - name: Check if tag has the right sequential format
+        continue-on-error: true
         run: |
           baseline='N'
           if [ ! $(git describe --tags `git rev-list --tags --max-count=1`) &> /dev/null ]; then
