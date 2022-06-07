@@ -79,6 +79,18 @@ jobs:
 
       # - name: Deploy stack
       #   run: make deploy-dev
+      
+      - name: Add action summary
+        env:
+          REPO: ${{ github.event.repository.name }}
+          REPO_URL: ${{ github.event.repository.html_url }}
+        run: |
+          branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
+          echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+                "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
   Validate-Version:
     runs-on: ubuntu-latest
