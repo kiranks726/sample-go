@@ -8,13 +8,16 @@ on:
         type: choice
         description: Environment
         options:
-          - dev
           - qa
           - prod
         required: true
+      version:
+        Version: 
+        required: true
+        type: text
 
 jobs:
-  deploy:
+  Deploy:
     runs-on: ubuntu-latest
 
     environment: ${{ github.event.inputs.environment }}
@@ -31,6 +34,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.version }}
 
       - name: Create deploy version information file
         run: |
@@ -78,9 +83,9 @@ jobs:
           role-session-name: GithubCDActions
           aws-region: us-east-1
 
-      # # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      # #- name: Deploy stack
-      #   #run: make deploy
+      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
+      # - name: Deploy stack
+      #   run: make deploy
 
       - name: Add action summary
         env:
