@@ -168,7 +168,7 @@ jobs:
 
   Create-git-tag:
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: ${{ contains(join(needs.*.result, ','), 'success') }}
     needs: [Deploy-Dev, Validate-Version]
 
     steps:
