@@ -96,7 +96,7 @@ jobs:
   validate_version:
     name: Validate Version
     runs-on: ubuntu-latest
-    continue-on-error: true
+    # continue-on-error: true
 
     steps:
       - name: Checkout code
@@ -105,7 +105,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check if version is in semantic format
-        #continue-on-error: true
+        continue-on-error: true
         id: version_semantic
         run: |
           pip install semantic_version
@@ -126,7 +126,7 @@ jobs:
           echo "::set-output name=version::$vers"
 
       - name: Check if version is in ChangeLog file
-        #continue-on-error: true
+        continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -137,7 +137,7 @@ jobs:
           fi
 
       - name: Check if git tag already exists
-        #continue-on-error: true
+        continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -148,7 +148,7 @@ jobs:
           fi
 
       - name: Check if tag has the right sequential format
-        #continue-on-error: true
+        continue-on-error: true
         run: |
           baseline='N'
           if [ ! $(git describe --tags `git rev-list --tags --max-count=1`) &> /dev/null ]; then
