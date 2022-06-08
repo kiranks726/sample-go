@@ -7,6 +7,7 @@ on:
 
 jobs:
   Deploy-Dev:
+    id: deploy-dev
     runs-on: ubuntu-latest
 
     environment: dev
@@ -93,6 +94,7 @@ jobs:
       #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
   Validate-Version:
+    id: validate-version
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -180,7 +182,7 @@ jobs:
   Create-git-tag:
     runs-on: ubuntu-latest
     # if: ${{ contains(join(needs.*.result, ','), 'success') }}
-    #if: 
+    if: jobs.validate-version.outcome == 'success' && jobs.deploy-dev.conclusion == 'success'
     needs: [Deploy-Dev, Validate-Version]
     
 
