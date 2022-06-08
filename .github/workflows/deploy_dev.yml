@@ -96,7 +96,11 @@ jobs:
   validate_version:
     name: Validate Version
     runs-on: ubuntu-latest
-    # continue-on-error: true
+    continue-on-error: true
+
+    outputs:
+      outcome: ${{ env.outcome }}
+
 
     steps:
       - name: Checkout code
@@ -105,7 +109,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check if version is in semantic format
-        continue-on-error: true
+        #continue-on-error: true
         id: version_semantic
         run: |
           pip install semantic_version
@@ -126,7 +130,7 @@ jobs:
           echo "::set-output name=version::$vers"
 
       - name: Check if version is in ChangeLog file
-        continue-on-error: true
+        #continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -137,7 +141,7 @@ jobs:
           fi
 
       - name: Check if git tag already exists
-        continue-on-error: true
+        #continue-on-error: true
         run: |
           version=${{ steps.version_semantic.outputs.version }}
           echo "version is: ${version}"
@@ -148,7 +152,7 @@ jobs:
           fi
 
       - name: Check if tag has the right sequential format
-        continue-on-error: true
+        #continue-on-error: true
         run: |
           baseline='N'
           if [ ! $(git describe --tags `git rev-list --tags --max-count=1`) &> /dev/null ]; then
@@ -179,11 +183,16 @@ jobs:
           fi
           fi
 
+      - id: conclusion
+        # if: failure()
+        run: echo "outcome=success" >> $GITHUB_ENV
+
   create_git_tag:
     name: Create Git Tag
     runs-on: ubuntu-latest
-    if: ${{ needs.validate_version.status == 'success' && needs.deploy_dev.status == 'success' }}
-    needs: [deploy_dev, validate_version] 
+    # if: ${{ needs.validate_version.status == 'success' && needs.deploy_dev.status == 'success' }}
+    if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
+    needs: [deploy_dev,validate_version] 
 
     steps:
       - name: Checkout code
