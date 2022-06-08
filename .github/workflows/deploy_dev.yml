@@ -6,7 +6,8 @@ on:
       - master
 
 jobs:
-  Deploy-Dev:
+  deploy_dev:
+    name: Deploy Dev
     #id: deploy-dev
     runs-on: ubuntu-latest
 
@@ -31,7 +32,7 @@ jobs:
           import configparser
           from datetime import datetime
           import json, os
-          
+
           read_version = configparser.ConfigParser()
           read_version.read("VERSION.ini")
           version = read_version.get('APP', 'version')
@@ -80,7 +81,7 @@ jobs:
 
       # - name: Deploy stack
       #   run: make deploy-dev
-      
+
       # - name: Add action summary
       #   env:
       #     REPO: ${{ github.event.repository.name }}
@@ -88,12 +89,13 @@ jobs:
       #   run: |
       #     branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
       #     echo "## Sources" >> $GITHUB_STEP_SUMMARY
-      #     echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY 
-      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+      #     echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY
+      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY
       #     echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
       #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
-  Validate-Version:
+  validate_version:
+    name: Validate-Version
     #id: validate-version
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -179,13 +181,10 @@ jobs:
           fi
           fi
 
-  Create-git-tag:
+  Create-Git-Tag:
     runs-on: ubuntu-latest
-    # if: ${{ contains(join(needs.*.result, ','), 'success') }}
-    needs: [Deploy-Dev, Validate-Version]
-    if: ${{ needs.Validate-Version.outcome == 'success' && needs.Deploy-Dev.conclusion == 'success' }}
-    
-    
+    needs: [deploy_dev, validate_version] 
+    if: ${{ needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
 
     steps:
       - name: Checkout code
