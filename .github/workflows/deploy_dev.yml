@@ -181,7 +181,7 @@ jobs:
 
   Create-Git-Tag:
     runs-on: ubuntu-latest
-    if: ${{ success() && needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
+    if: ${{ always() && needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
     needs: [deploy_dev, validate_version] 
 
     steps:
