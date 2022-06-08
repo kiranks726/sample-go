@@ -181,10 +181,10 @@ jobs:
       - name: Set outcome to success 
         run: echo "outcome=success" >> $GITHUB_ENV
 
-  Create-Git-Tag:
+  Create-git-tag:
     # name: Create Git Tag
     runs-on: ubuntu-latest
-    #if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
+    if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
     needs: [Deploy-Dev, Validate-Version]
 
     steps:
