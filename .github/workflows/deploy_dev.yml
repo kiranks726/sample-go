@@ -185,7 +185,7 @@ jobs:
     name: Create Git Tag
     runs-on: ubuntu-latest
     if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
-    needs: [deploy_dev, validate_version]
+    needs: [Deploy-Dev, Validate-Version]
 
     steps:
       - name: Checkout code
