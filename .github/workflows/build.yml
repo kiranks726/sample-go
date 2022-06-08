@@ -7,20 +7,16 @@ on:
 
 jobs:
   build:
-    name: Post Commit Checks
-
+    name: Build, Validate & Display Reports
     runs-on: ubuntu-latest
-
     permissions:
       id-token: write
       contents: read
       pull-requests: write
       checks: write
-
     env:
       NODE_VERSION: 16.14.0
       GO_VERSION: 1.17
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -53,8 +49,6 @@ jobs:
           role-session-name: GithubCIActions
           aws-region: us-east-1
 
-      # This generates Cloud formation template which is referenced by the sst unit test cases.
-      # The generated Cloud formation template is only used for running tests against and not deployed.
       - name: Synthesize stack
         run: make build
 
@@ -62,7 +56,6 @@ jobs:
         run: make test
 
       - name: Display coverage metrics in Pull Request and jobs summary
-        if: github.event_name == 'pull_request'
         uses: 5monkeys/cobertura-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +69,6 @@ jobs:
           report_name: Coverage Metrics
 
       - name: Run diff to display infrastructure changes in Pull Request
-        if: github.event_name == 'pull_request'
         env:
           PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           PR_URL: ${{ github.event.pull_request.html_url}}
@@ -106,7 +98,6 @@ jobs:
           fi
 
       - name: Add action summary
-        if: github.event_name == 'pull_request'
         env:
           REPO: ${{ github.event.pull_request.head.repo.name }}
           REPO_URL: ${{ github.event.pull_request.head.repo.html_url }}
