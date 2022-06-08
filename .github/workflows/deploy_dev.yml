@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy_dev:
-    name: Deploy Dev
+    #name: Deploy Dev
     runs-on: ubuntu-latest
 
     #environment: dev
@@ -94,7 +94,7 @@ jobs:
       #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
   validate_version:
-    name: Validate Version
+    #name: Validate Version
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -180,9 +180,9 @@ jobs:
           fi
 
   create_git_tag:
-    name: Create Git Tag
+    #name: Create Git Tag
     runs-on: ubuntu-latest
-    if: ${{ failure() && needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
+    if: ${{ needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
     needs: [deploy_dev, validate_version] 
 
     steps:
