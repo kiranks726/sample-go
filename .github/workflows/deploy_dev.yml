@@ -192,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: ${{ needs.validate_version.status == 'success' && needs.deploy_dev.status == 'success' }}
     if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
-    needs: [deploy_dev,validate_version] 
+    needs: [deploy_dev, validate_version] 
 
     steps:
       - name: Checkout code
