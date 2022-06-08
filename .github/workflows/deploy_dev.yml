@@ -182,8 +182,9 @@ jobs:
   Create-git-tag:
     runs-on: ubuntu-latest
     # if: ${{ contains(join(needs.*.result, ','), 'success') }}
-    if: ${{ jobs.Validate-Version.outcome == 'success' && jobs.Deploy-Dev.conclusion == 'success' }}
     needs: [Deploy-Dev, Validate-Version]
+    if: ${{ needs.Validate-Version.outcome == 'success' && needs.Deploy-Dev.conclusion == 'success' }}
+    
     
 
     steps:
