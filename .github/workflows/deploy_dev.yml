@@ -182,7 +182,7 @@ jobs:
   create_git_tag:
     name: Create Git Tag
     runs-on: ubuntu-latest
-    if: ${{ needs.validate_version.conclusion == 'success' && needs.deploy_dev.conclusion == 'success' }}
+    if: ${{ needs.validate_version.result == 'success' && needs.deploy_dev.result == 'success' }}
     needs: [deploy_dev, validate_version] 
 
     steps:
