@@ -34,7 +34,6 @@ jobs:
           short_hash = commit_sha[:7]
           run_id = os.getenv("GITHUB_RUN_ID")
           dev_version = f"{version}-{short_hash}-{run_id}"
-          print("Here is the dev version:", dev_version)
 
           pipeline_details ={
             "name" : os.getenv("GITHUB_WORKFLOW"),
@@ -104,7 +103,8 @@ jobs:
         run: |
           pip install semantic_version
           vers=`python3 -c "
-          import semantic_version, configparser
+          import configparser
+          import semantic_version
           read_version = configparser.ConfigParser()
           read_version.read('VERSION.ini')
           version = read_version.get('APP', 'version')
@@ -153,7 +153,6 @@ jobs:
           echo "version is: ${version}"
           if [[ $baseline == 'Y' ]]; then
           t_current_version=`echo ${version}`
-          echo "t_current_version is: ${t_current_version}"
           no_sequence=`python3 -c "
           import semantic_version
           v = semantic_version.Version('''$ver''')
@@ -176,8 +175,8 @@ jobs:
   tag-version-git:
     name: Tag version in GIT
     runs-on: ubuntu-latest
-    if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
-    needs: [Deploy-Dev, Validate-Version]
+    if: ${{ needs.deploy-dev.result == 'success' && needs.validate-version.outputs.outcome == 'success' }}
+    needs: [deploy-dev, validate-version]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

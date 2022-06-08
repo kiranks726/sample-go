@@ -12,7 +12,6 @@ on:
           - prod
         required: true
     
-
 jobs:
   deploy:
     name: Deploy in ${{ github.event.inputs.environment }}
