@@ -7,7 +7,7 @@ on:
 
 jobs:
   Deploy-dev:
-    name: Deploy Dev
+    #name: Deploy Dev
     runs-on: ubuntu-latest
 
     #environment: dev
@@ -94,7 +94,7 @@ jobs:
       #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
   Validate-Version:
-    name: Validate Version
+    #name: Validate Version
     runs-on: ubuntu-latest
     continue-on-error: true
 
