@@ -1,4 +1,4 @@
-name: PR Workflow
+name: Build & Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     branches: [master]
 
 jobs:
-  post_commit:
+  build:
     name: Post Commit Checks
 
     runs-on: ubuntu-latest

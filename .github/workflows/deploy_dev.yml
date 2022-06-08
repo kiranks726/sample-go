@@ -1,4 +1,4 @@
-name: Deploy to Dev
+name: Deploy in dev & Validate version
 
 on:
   push:
@@ -6,27 +6,21 @@ on:
       - master
 
 jobs:
-  Deploy-Dev:
-    #name: Deploy Dev
+  deploy-dev:
+    name: Deploy in Dev
     runs-on: ubuntu-latest
-
-    #environment: dev
-
+    environment: dev
     permissions:
       id-token: write
       contents: read
-
     env:
       NODE_VERSION: 16.14.0
       GO_VERSION: 1.17
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Create deploy version information file
-        # env:
-        #   COMMIT_SHA: ${{ github.event.push.head.sha }}
         run: |
           import configparser
           from datetime import datetime
@@ -81,26 +75,24 @@ jobs:
       # - name: Deploy stack
       #   run: make deploy-dev
 
-      # - name: Add action summary
-      #   env:
-      #     REPO: ${{ github.event.repository.name }}
-      #     REPO_URL: ${{ github.event.repository.html_url }}
-      #   run: |
-      #     branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
-      #     echo "## Sources" >> $GITHUB_STEP_SUMMARY
-      #     echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY
-      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-      #     echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-      #           "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
+      - name: Add action summary
+        env:
+          REPO: ${{ github.event.repository.name }}
+          REPO_URL: ${{ github.event.repository.html_url }}
+        run: |
+          branchUrl=${REPO_URL}/tree/${GITHUB_REF_NAME}
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
+          echo "|Repository|Branch|" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+                "<a href='${branchUrl}'>${GITHUB_REF_NAME}</a>|" >> $GITHUB_STEP_SUMMARY
 
-  Validate-Version:
-    #name: Validate Version
+  validate-version:
+    name: Validate Version
     runs-on: ubuntu-latest
     continue-on-error: true
-
     outputs:
       outcome: ${{ env.outcome }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -178,20 +170,19 @@ jobs:
           fi
           fi
 
-      - name: Set outcome to success 
+      - name: Set Validate version outcome to success
         run: echo "outcome=success" >> $GITHUB_ENV
 
-  Create-git-tag:
-    # name: Create Git Tag
+  tag-version-git:
+    name: Tag version in GIT
     runs-on: ubuntu-latest
     if: ${{ needs.validate_version.outputs.outcome == 'success' && needs.deploy_dev.result == 'success'}}
     needs: [Deploy-Dev, Validate-Version]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create git tag
+      - name: Create tag with version
         run: |
           vers=`python3 -c "
           import configparser

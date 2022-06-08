@@ -1,4 +1,4 @@
-name: Deployment
+name: Deploy in QA or Prod
 
 # This enables to manually trigger the workflow on the Github action UI
 on:
@@ -15,20 +15,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy in ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
-
     environment: ${{ github.event.inputs.environment }}
-
-    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:
       id-token: write
       contents: write
-
     env:
       NODE_VERSION: 16.14.0
       GO_VERSION: 1.17
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
