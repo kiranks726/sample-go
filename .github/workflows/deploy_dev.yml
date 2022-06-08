@@ -179,10 +179,11 @@ jobs:
           fi
           fi
 
-  Create-Git-Tag:
+  create_git_tag:
+    name: Create Git Tag
     runs-on: ubuntu-latest
+    if: ${{ needs.validate_version.outcome == 'success' }}
     needs: [deploy_dev, validate_version] 
-    if: ${{ needs.deploy_dev.conclusion == 'success' && needs.validate_version.outcome == 'success' }}
 
     steps:
       - name: Checkout code
