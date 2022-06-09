@@ -21,7 +21,7 @@ func Handler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	config := Config.Config{}.GetConfig()
 
 	// GetItem request
-	s := movies.MovieService{TableName: config.Movies.TableName}
+	s := movies.MovieService{TableName: config.Stacks.Movies.Tablename}
 	movie, err := s.FindOne(pathParamID)
 
 	// Checking for errors, return error

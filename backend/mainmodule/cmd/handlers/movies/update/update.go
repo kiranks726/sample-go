@@ -26,7 +26,7 @@ func Handler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	}
 
 	// Get Service and updapte item
-	s := movies.MovieService{TableName: Config.Config{}.GetConfig().Movies.TableName}
+	s := movies.MovieService{TableName: Config.Config{}.GetConfig().Stacks.Movies.Tablename}
 
 	item, updateErr := s.UpdateOne(&itemStruct)
 	if updateErr != nil {
