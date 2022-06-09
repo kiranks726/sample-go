@@ -9,7 +9,7 @@ and *Component Metadata* adheres to [Semantic Versioning](https://semver.org/spe
 > trigger a build commit with updated CHANGELOG.md and bump-up app version in
 > VERSION.ini file.
 
-## [0.1.0] - 2021-12-27
+## [0.0.0] - 2021-12-27
 
 - First release
 - Service refactored using Cookiecutter Service Template version 1.0.0

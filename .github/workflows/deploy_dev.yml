@@ -20,34 +20,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create deploy version information file
-        run: |
-          import configparser
-          from datetime import datetime
-          import json, os
+      # - name: Create deploy version information file
+      #   run: |
+      #     import configparser
+      #     from datetime import datetime
+      #     import json, os
 
-          read_version = configparser.ConfigParser()
-          read_version.read("VERSION.ini")
-          version = read_version.get('APP', 'version')
+      #     read_version = configparser.ConfigParser()
+      #     read_version.read("VERSION.ini")
+      #     version = read_version.get('APP', 'version')
 
-          commit_sha = os.getenv("GITHUB_SHA")
-          short_hash = commit_sha[:7]
-          run_id = os.getenv("GITHUB_RUN_ID")
-          dev_version = f"{version}-{short_hash}-{run_id}"
+      #     commit_sha = os.getenv("GITHUB_SHA")
+      #     short_hash = commit_sha[:7]
+      #     run_id = os.getenv("GITHUB_RUN_ID")
+      #     dev_version = f"{version}-{short_hash}-{run_id}"
 
-          pipeline_details ={
-            "name" : os.getenv("GITHUB_WORKFLOW"),
-            "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "version" : dev_version,
-            "runId" :run_id,                
-            "branch" : os.getenv("GITHUB_REF_NAME")
-          }
+      #     pipeline_details ={
+      #       "name" : os.getenv("GITHUB_WORKFLOW"),
+      #       "date" : datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+      #       "version" : dev_version,
+      #       "runId" :run_id,                
+      #       "branch" : os.getenv("GITHUB_REF_NAME")
+      #     }
             
-          json_object = json.dumps(pipeline_details, indent = 4)
-          workspace_path = os.getenv("GITHUB_WORKSPACE")
+      #     json_object = json.dumps(pipeline_details, indent = 4)
+      #     workspace_path = os.getenv("GITHUB_WORKSPACE")
             
-          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
-              outfile.write(json_object)
+      #     with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+      #         outfile.write(json_object)
 
         shell: python
 
