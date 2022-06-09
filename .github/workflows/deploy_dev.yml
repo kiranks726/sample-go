@@ -194,9 +194,9 @@ jobs:
           version = read_version.get('APP', 'version')
           print(version)"`
 
-          git config user.name '$GIT_USER'
-          git config user.email '$GIT_MAIL'
-          message='Tagged by Automated deploy in dev job, Run Number: $GITHUB_RUN_ID'
-          git tag '$vers' -m '$message'
-          git push origin '$vers'
+          git config user.name "$GIT_USER"
+          git config user.email "$GIT_MAIL"
+          message="Tagged by Automated deploy in dev job, Run Number: $GITHUB_RUN_ID"
+          git tag "$vers" -m "$message"
+          git push origin "$vers"
           echo "git tag '$vers' created"
