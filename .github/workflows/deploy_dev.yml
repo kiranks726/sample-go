@@ -159,7 +159,7 @@ jobs:
           v_major = v.next_major()
           v_minor = v.next_minor()
           v_patch = v.next_patch()
-          print('v is:',v)
+          print('v_major is:',v_major)
           if('''$t_current_version''' != str(v_major) and '''$t_current_version''' != str(v_minor) and '''$t_current_version''' != str(v_patch)):              
             print('Y')
           else:
