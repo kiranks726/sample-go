@@ -122,7 +122,7 @@ jobs:
       - name: Check if version is in ChangeLog file
         run: |
           version=${{ steps.version_semantic.outputs.version }}
-          echo 'version is: ${version}'
+          echo 'version is: $version'
           chgLog=`grep -q '$version' CHANGELOG.md; [ $? -eq 0 ] && echo 'Y' || echo 'N'`
           if [[ $chgLog == 'N' ]]; then
             echo 'Error: Version not available in CHANGELOG.md file'
