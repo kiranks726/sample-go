@@ -27,7 +27,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create deploy version information file
+      - name: Create workflow information file
         run: |
           import configparser
           from datetime import datetime
