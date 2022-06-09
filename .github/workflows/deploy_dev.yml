@@ -122,20 +122,20 @@ jobs:
       - name: Check if version is in ChangeLog file
         run: |
           version=${{ steps.version_semantic.outputs.version }}
-          echo 'version is: $version'
-          chgLog=`grep -q '$version' CHANGELOG.md; [ $? -eq 0 ] && echo 'Y' || echo 'N'`
-          if [[ $chgLog == 'N' ]]; then
-            echo 'Error: Version not available in CHANGELOG.md file'
+          echo "version is: ${version}"
+          chgLog=`grep -q "$version" CHANGELOG.md; [ $? -eq 0 ] && echo "Y" || echo "N"`
+          if [[ $chgLog == "N" ]]; then
+            echo "Error: Version not available in CHANGELOG.md file"
             exit 1
           fi
 
       - name: Check if git tag already exists
         run: |
           version=${{ steps.version_semantic.outputs.version }}
-          echo 'version is: ${version}'
+          echo "version is: ${version}"
           tag=$(git tag -l "$version")
-          if [ ! -z '$tag' ]; then
-            echo 'ERROR: Git tag already exists'
+          if [ ! -z "$tag" ]; then
+            echo "ERROR: Git tag already exists"
             exit 1
           fi
 
