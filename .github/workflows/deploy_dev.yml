@@ -159,12 +159,10 @@ jobs:
           v_major = v.next_major()
           v_minor = v.next_minor()
           v_patch = v.next_patch()
-          print('v_major is:',v_major)
           if('''$t_current_version''' != str(v_major) and '''$t_current_version''' != str(v_minor) and '''$t_current_version''' != str(v_patch)):              
             print('Y')
           else:
-            print('N')"`
-          echo "result is: $no_sequence"            
+            print('N')"`           
           if [[ $no_sequence != "N" ]]; then
             echo "Error: Version not in sequential format"
             exit 1
