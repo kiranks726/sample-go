@@ -150,7 +150,7 @@ jobs:
             ver=$(git describe --tags `git rev-list --tags --max-count=1`)
           fi
           version=${{ steps.version_semantic.outputs.version }}
-          echo 'version is: ${version}'
+          echo "version is: ${version}"
           if [[ $baseline == 'Y' ]]; then
           t_current_version=`echo ${version}`
           no_sequence=`python3 -c "
