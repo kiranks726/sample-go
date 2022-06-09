@@ -34,14 +34,6 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Run lint and create annotations in jobs summary
-        uses: golangci/golangci-lint-action@v3
-        # TODO: Remove below parameter
-        continue-on-error: true
-        with:
-          version: "latest"
-          working-directory: ${{ github.workspace }}/backend/mainmodule
-
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -51,6 +43,14 @@ jobs:
 
       - name: Synthesize stack
         run: make build
+
+      - name: Run lint and create annotations in jobs summary
+        uses: golangci/golangci-lint-action@v3
+        # TODO: Remove below parameter
+        continue-on-error: true
+        with:
+          version: "latest"
+          working-directory: ${{ github.workspace }}/backend/mainmodule
 
       - name: Run test
         run: make test
