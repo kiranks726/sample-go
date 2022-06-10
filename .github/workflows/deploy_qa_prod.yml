@@ -74,7 +74,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy stack
-        run: make deploy stage=${{ github.event.inputs.environment }}
+        run: make deploy stage="${{ github.event.inputs.environment }}"
 
       - name: Add action summary
         env:
