@@ -1,0 +1,17 @@
+{
+    "stacks": {},
+    "assets": {
+        "welcome": {
+            "Key": "email/templates/welcome.hbs",
+            "Src": "../api/templates/welcome.hbs",
+            "Location": "s3://acs-sms-carlsberg-dev-595d95d0-infrastructure/email/templates/welcome.hbs"
+          }
+    },
+    "secrets": {
+        "acs-git-user": {
+            "Name": "acs-git-user",
+            "Description": "Assets Store BitBucket Username",
+            "ParameterName": "acs-sms-carlsberg-dev-us-east-1-acs-git-user"
+          }
+    }
+}

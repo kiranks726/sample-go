@@ -73,9 +73,8 @@ jobs:
           role-session-name: GithubCDActions
           aws-region: us-east-1
 
-      # TODO: stage can be parameterized based on the env selected on the Github action UI and parsed to the make command
-      # -name: Deploy stack
-      #   run: make deploy
+      - name: Deploy stack
+        run: make deploy --stage ${{ github.event.inputs.environment }}
 
       - name: Add action summary
         env:

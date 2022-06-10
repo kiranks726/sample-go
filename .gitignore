@@ -21,10 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vscode/dryrun.log
 
 # hide data
 *.csv
 *csv.zip
+!movies_metadata_1.csv
+!movies_metadata_50.csv
+!movies_metadata_1000.csv
 
 # hide lint report
 lint_report.html

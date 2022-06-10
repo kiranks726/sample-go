@@ -1,0 +1,8 @@
+{
+    "project": "CTX Kitchen Sink",
+    "projectVersion": "v0.0.1",
+    "projectPrefix": "-ctx-kitchensink",
+    "auth": {
+        "domain": "ctxdev9"
+    }
+}

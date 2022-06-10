@@ -1,4 +1,5 @@
 import * as sst from "@serverless-stack/resources";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
 export default class Moviestack extends sst.Stack {
   constructor(scope, id, props) {
@@ -7,7 +8,7 @@ export default class Moviestack extends sst.Stack {
     // Create the DynamoDB table
     const moviesTable = new sst.Table(this, "movies", {
       fields: {
-        Id: sst.TableFieldType.STRING,
+        Id: "string",
       },
       primaryIndex: { partitionKey: "Id" },
     });
@@ -18,9 +19,11 @@ export default class Moviestack extends sst.Stack {
     
     // Create a HTTP API
     const moviesApi = new sst.Api(this, "moviesApi", {
-      defaultFunctionProps: {
-        environment: {
-          movieTableName: moviesTable.dynamodbTable.tableName,
+      defaults: {
+        function: {
+          environment: {
+            STAGE: this.stage,
+          }
         },
       },
       routes: {
@@ -34,12 +37,16 @@ export default class Moviestack extends sst.Stack {
     });
 
     // Setup API permissions to Notes Table
-    moviesApi.attachPermissions([moviesTable]);
+    moviesApi.attachPermissions([
+      moviesTable,
+      "appconfig:GetLatestConfiguration",
+      "appconfig:StartConfigurationSession",
+    ]);
 
     // Show the endpoint in the output
     this.addOutputs({
-      moviesApiEndpoint: moviesApi.url,
-      moviesTablename: moviesTable.dynamodbTable.tableName,
+      MoviesApiEndpoint: moviesApi.url,
+      MoviesTablename: moviesTable.tableName,
     });
   }
 
@@ -49,11 +56,15 @@ export default class Moviestack extends sst.Stack {
   }
   
   movieRoute(name) {
+    const layerArnX86 = "arn:aws:lambda:us-east-1:027255383542:layer:AWS-AppConfig-Extension:68"
     return {
       function: {
         srcPath: "backend/mainmodule",
         functionName: this.resourceName(`movies-${name}`),
         handler: "cmd/handlers/movies/" + name + "/" + name + ".go",
+        layers: [
+          lambda.LayerVersion.fromLayerVersionArn(this, name + "app-config-layer", layerArnX86),
+        ]
       }
     }
   }

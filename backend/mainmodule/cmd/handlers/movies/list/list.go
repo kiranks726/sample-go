@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
 	"encoding/json"
@@ -19,8 +20,10 @@ func ListHandler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxy
 	// Load app configuration
 	config := Config.Config{}.GetConfig()
 
-	// Get list data from service
-	tableName := config.Movies.TableName
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+
+	// Get list data from service!
+	tableName := config.Stacks.Movies.Tablename
 	s := movies.MovieService{TableName: tableName}
 	result, err := s.FindList()
 
