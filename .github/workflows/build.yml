@@ -55,7 +55,7 @@ jobs:
       #     npx sst diff --stage dev
 
       - name: Deploy
-        run: make deploy
+        run: npx sst deploy --stage dev
 
       # - name: Run lint and create annotations in jobs summary
       #   uses: golangci/golangci-lint-action@v3
