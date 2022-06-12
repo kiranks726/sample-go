@@ -39,24 +39,23 @@ jobs:
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
-        # env: 
-        #   AWS_ROLE: arn:aws:iam::593186514662:role/github-actions-role
-          #AWS_REGION: us-west-1
+        env: 
+          AWS_REGION: us-west-2
         with:
           role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
           role-session-name: GithubCIActions
-          #aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       # - name: Synthesize stack
       #   run: make build
 
-      - name: Synthesize
-        run: |
-          npx sst telemetry disable
-          npx sst diff --stage dev
+      # - name: Synthesize
+      #   run: |
+      #     npx sst telemetry disable
+      #     npx sst diff --stage dev
 
-      # - name: Deploy
-      #   run: make deploy
+      - name: Deploy
+        run: make deploy
 
       # - name: Run lint and create annotations in jobs summary
       #   uses: golangci/golangci-lint-action@v3
