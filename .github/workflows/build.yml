@@ -39,13 +39,13 @@ jobs:
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
-        env: 
-          AWS_ROLE: arn:aws:iam::593186514662:role/github-actions-role
-          AWS_REGION: us-west-1
+        # env: 
+        #   AWS_ROLE: arn:aws:iam::593186514662:role/github-actions-role
+          #AWS_REGION: us-west-1
         with:
           role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
           role-session-name: GithubCIActions
-          aws-region: ${{ env.AWS_REGION }}
+          #aws-region: ${{ env.AWS_REGION }}
 
       # - name: Synthesize stack
       #   run: make build
