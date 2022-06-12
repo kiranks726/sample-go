@@ -53,7 +53,7 @@ jobs:
       - name: Synthesize
         run: |
           npx sst telemetry disable
-          npx sst diff
+          npx sst diff --stage dev
 
       # - name: Deploy
       #   run: make deploy
