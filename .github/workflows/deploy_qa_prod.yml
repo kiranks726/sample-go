@@ -75,8 +75,7 @@ jobs:
           with open(f"{workspace_path}/sst.json", "r") as f:
             sst_data = json.load(f)
           print(sst_data["region"])"`
-          
-         echo "::set-output name=aws_region::$region"
+          echo "::set-output name=aws_region::$region"
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
