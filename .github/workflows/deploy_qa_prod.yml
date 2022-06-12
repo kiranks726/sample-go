@@ -48,7 +48,7 @@ jobs:
           json_object = json.dumps(pipeline_details, indent = 4)
           workspace_path = os.getenv("GITHUB_WORKSPACE")
             
-          with open(f"{workspace_path}/backend/mainmodule/build_info.json", "w") as outfile:
+          with open(f"{workspace_path}/backend/mainmodule/workflow_info.json", "w") as outfile:
               outfile.write(json_object)
 
         shell: python
@@ -68,10 +68,12 @@ jobs:
 
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
+        env:
+          AWS_REGION: us-east-1
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
           role-session-name: GithubCDActions
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy stack
         run: make deploy --stage ${{ github.event.inputs.environment }}
