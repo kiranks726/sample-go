@@ -53,7 +53,7 @@ install:
 	npm install
 	@echo "install golang https://go.dev/doc/install"
 
-build: config/local-${STAGE}.json	## Build project for deployment
+build: #config/local-${STAGE}.json	## Build project for deployment
 	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst build --stage ${STAGE}
 
 start:	## Start "local" environment with supporting cloud resources
@@ -61,7 +61,7 @@ start:	## Start "local" environment with supporting cloud resources
 start-${STAGE}: config/local-${STAGE}.json	## Start environment with supporting cloud resources
 	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst start --stage ${STAGE}
 
-deploy:	config/local-${STAGE}.json ## Deploy stack as complete build to AWS environment
+deploy:	# config/local-${STAGE}.json ## Deploy stack as complete build to AWS environment
 	@echo "Resource URL: ${RESOURCE_URL}"
 	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst deploy --stage ${STAGE}
 
