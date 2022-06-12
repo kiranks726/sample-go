@@ -20,12 +20,12 @@ export default function main(app) {
     }
   });
 
-  // if (app.stage != "local") {
-  //   new Configstack(app, "config-stack", {
-  //     tags: {
-  //       "ctx:project": project,
-  //       "ctx:project-version": projectVersion
-  //     }
-  //   });
-  // }
+  if (app.stage != "local") {
+    new Configstack(app, "config-stack", {
+      tags: {
+        "ctx:project": project,
+        "ctx:project-version": projectVersion
+      }
+    });
+  }
 }
