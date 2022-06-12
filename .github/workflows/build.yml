@@ -47,11 +47,11 @@ jobs:
           role-session-name: GithubCIActions
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Synthesize stack
-        run: make build
+      # - name: Synthesize stack
+      #   run: make build
 
       - name: Deploy
-        run: make deploy stage="dev"
+        run: make deploy
 
       # - name: Run lint and create annotations in jobs summary
       #   uses: golangci/golangci-lint-action@v3
