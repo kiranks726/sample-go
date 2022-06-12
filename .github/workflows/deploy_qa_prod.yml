@@ -72,9 +72,9 @@ jobs:
           region=`python3 -c "
           import json
           
-          with open(f"{workspace_path}/sst.json", "r") as f:
+          with open(f'{workspace_path}/sst.json', 'r') as f:
             sst_data = json.load(f)
-          print(sst_data["region"])"`
+          print(sst_data['region'])"`
           echo "::set-output name=aws_region::$region"
 
       - name: Configure aws
