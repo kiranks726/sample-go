@@ -64,17 +64,27 @@ jobs:
       - name: Install dependencies
         run: make install
 
+      - name: Read region from sst.json
+        id: get_aws_region
+        run: |
+          region = `python3 -c "
+          import json
+          
+          with open(f"{workspace_path}/sst.json", "r") as f:
+            sst_data = json.load(f)
+          print(sst_data["region"])
+          "`
+         echo "::set-output name=aws_region::$region"
+
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
-        env:
-          AWS_REGION: us-east-1
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
           role-session-name: GithubCDActions
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ steps.get_aws_region.outputs.aws_region }}
 
       - name: Deploy stack
-        run: make deploy --stage dev
+        run: make deploy stage="dev"
 
       - name: Add action summary
         env:

@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master]
-  push:
-    branches:
-      - "feature/*"
 
 jobs:
   build:
@@ -37,94 +34,96 @@ jobs:
       - name: Install dependencies
         run: make install
 
+      - name: Read region from sst.json
+        id: get_aws_region
+        run: |
+          region = `python3 -c "
+          import json
+          
+          with open(f"{workspace_path}/sst.json", "r") as f:
+            sst_data = json.load(f)
+          print(sst_data["region"])
+          "`
+         echo "::set-output name=aws_region::$region"
+
       - name: Configure aws
         uses: aws-actions/configure-aws-credentials@v1
-        env: 
-          AWS_REGION: us-west-2
         with:
-          role-to-assume: arn:aws:iam::593186514662:role/github-actions-role
+          role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GithubCIActions
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ steps.get_aws_region.outputs.aws_region }}
 
-      # - name: Synthesize stack
-      #   run: make build
+      - name: Synthesize stack
+        run: make build
 
-      # - name: Synthesize
-      #   run: |
-      #     npx sst telemetry disable
-      #     npx sst diff --stage dev
+      - name: Run lint and create annotations in jobs summary
+        uses: golangci/golangci-lint-action@v3
+        # TODO: Remove below parameter
+        continue-on-error: true
+        with:
+          version: "latest"
+          working-directory: ${{ github.workspace }}/backend/mainmodule
 
-      - name: Deploy
-        run: npx sst deploy --stage dev
+      - name: Run test
+        run: make test
 
-      # - name: Run lint and create annotations in jobs summary
-      #   uses: golangci/golangci-lint-action@v3
-      #   # TODO: Remove below parameter
-      #   continue-on-error: true
-      #   with:
-      #     version: "latest"
-      #     working-directory: ${{ github.workspace }}/backend/mainmodule
+      - name: Display coverage metrics in Pull Request and jobs summary
+        uses: 5monkeys/cobertura-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
+          minimum_coverage: 70
+          fail_below_threshold: false
+          show_line: true
+          show_branch: true
+          show_missing: true
+          only_changed_files: false
+          report_name: Coverage Metrics
 
-      # - name: Run test
-      #   run: make test
+      - name: Run diff to display infrastructure changes in Pull Request
+        env:
+          PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
+          PR_URL: ${{ github.event.pull_request.html_url}}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          npx sst telemetry disable
+          npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
+          output=$(cat infra_changes_report.log)
+          if [[ $output == *"no differences"* ]]; then
+            echo "Skipping commenting on the Pull Request since there is no infrastructure changes"
+          else
+            gitShortSha=$(git rev-parse --short ${COMMIT_SHA})
+            prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
 
-      # - name: Display coverage metrics in Pull Request and jobs summary
-      #   uses: 5monkeys/cobertura-action@master
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     path: ${{ github.workspace }}/reports/coverage/coverage_report.xml
-      #     minimum_coverage: 70
-      #     fail_below_threshold: false
-      #     show_line: true
-      #     show_branch: true
-      #     show_missing: true
-      #     only_changed_files: false
-      #     report_name: Coverage Metrics
+            commentWrapper="#### Differences between the infrastructure specified in the current state of the app and the currently deployed application
+            #### Generated against <a href="${prCommitUrl}">${gitShortSha}</a>
+            <details><summary>Show Output</summary>
 
-      # - name: Run diff to display infrastructure changes in Pull Request
-      #   env:
-      #     PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
-      #     PR_URL: ${{ github.event.pull_request.html_url}}
-      #     COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-      #   run: |
-      #     npx sst telemetry disable
-      #     npx sst diff --stage dev 2>&1 | tee infra_changes_report.log
-      #     output=$(cat infra_changes_report.log)
-      #     if [[ $output == *"no differences"* ]]; then
-      #       echo "Skipping commenting on the Pull Request since there is no infrastructure changes"
-      #     else
-      #       gitShortSha=$(git rev-parse --short ${COMMIT_SHA})
-      #       prCommitUrl="${PR_URL}/commits/${COMMIT_SHA}"
+            \`\`\`
+            ${output}
+            \`\`\`
 
-      #       commentWrapper="#### Differences between the infrastructure specified in the current state of the app and the currently deployed application
-      #       #### Generated against <a href="${prCommitUrl}">${gitShortSha}</a>
-      #       <details><summary>Show Output</summary>
+            </details>
+            "
+            payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
+            echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
+          fi
 
-      #       \`\`\`
-      #       ${output}
-      #       \`\`\`
-
-      #       </details>
-      #       "
-      #       payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
-      #       echo "${payload}" | curl -s -S --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data @- "${PR_COMMENTS_URL}" > /dev/null
-      #     fi
-
-      # - name: Add action summary
-      #   env:
-      #     REPO: ${{ github.event.pull_request.head.repo.name }}
-      #     REPO_URL: ${{ github.event.pull_request.head.repo.html_url }}
-      #     COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-      #     PR_URL: ${{ github.event.pull_request.html_url}}
-      #   run: |
-      #     prCommitUrl=${PR_URL}/commits/${COMMIT_SHA}
-      #     shortSha=$(git rev-parse --short ${COMMIT_SHA})
-      #     echo "## Sources" >> $GITHUB_STEP_SUMMARY
-      #     echo "|Repository|Commit sha|" >> $GITHUB_STEP_SUMMARY 
-      #     echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
-      #     echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
-      #           "<a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
-      #     echo "" >> $GITHUB_STEP_SUMMARY
-      #     echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
-      #           "as a comment with commit sha on the Pull request. Lints(if any) can also be"\
-      #           "found as annotations in the Files changed tab on the Pull request" >> $GITHUB_STEP_SUMMARY
+      - name: Add action summary
+        env:
+          REPO: ${{ github.event.pull_request.head.repo.name }}
+          REPO_URL: ${{ github.event.pull_request.head.repo.html_url }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_URL: ${{ github.event.pull_request.html_url}}
+        run: |
+          prCommitUrl=${PR_URL}/commits/${COMMIT_SHA}
+          shortSha=$(git rev-parse --short ${COMMIT_SHA})
+          echo "## Sources" >> $GITHUB_STEP_SUMMARY
+          echo "|Repository|Commit sha|" >> $GITHUB_STEP_SUMMARY 
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY 
+          echo "|<a href='${REPO_URL}'>${REPO}</a>|"\
+                "<a href='${prCommitUrl}'>${shortSha}</a>|" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**_NOTE:_** Coverage Metrics, Infrastructure changes(if any) can be found"\
+                "as a comment with commit sha on the Pull request. Lints(if any) can also be"\
+                "found as annotations in the Files changed tab on the Pull request" >> $GITHUB_STEP_SUMMARY
