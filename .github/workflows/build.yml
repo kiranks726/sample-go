@@ -2,7 +2,7 @@ name: Build & Test
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
     branches: [master]
   push:
     branches:
@@ -47,8 +47,13 @@ jobs:
           role-session-name: GithubCIActions
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Synthesize stack
-        run: make build
+      # - name: Synthesize stack
+      #   run: make build
+
+      - name: Synthesize
+        run: |
+          npx sst telemetry disable
+          npx sst diff
 
       # - name: Deploy
       #   run: make deploy
