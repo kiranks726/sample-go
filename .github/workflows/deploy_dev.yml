@@ -7,12 +7,15 @@ on:
 
 jobs:
   deploy-dev:
+    name: Deploy in Dev
     uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
 
   validate-version:
+    name: Validate Version
     uses: kiranks726/sample-pipelines/.github/workflows/validate_version.yml@master
 
   tag-version-git:
+    name: Tag version in GIT
     if: ${{ needs.deploy-dev.result == 'success' && needs.validate-version.outputs.outcome == 'success' }}
     needs: [deploy-dev, validate-version]
     uses: kiranks726/sample-pipelines/.github/workflows/tag_version_git.yml@master
