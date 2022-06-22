@@ -11,6 +11,7 @@ jobs:
     uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
     with:
       environment: dev
+    secrets: inherit
 
   validate-version:
     name: Validate version
