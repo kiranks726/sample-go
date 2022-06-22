@@ -6,8 +6,6 @@ on:
       - "**"
 
 jobs:
-  deploy-dev:
-    name: Deploy in Dev
     uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
 
   validate-version:
