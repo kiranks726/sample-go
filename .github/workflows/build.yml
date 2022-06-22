@@ -7,6 +7,6 @@ on:
 
 jobs:
   build:
+    environment: dev
     uses: kiranks726/sample-pipelines/.github/workflows/build.yml@master
-    with:
-      environment: dev
+      
