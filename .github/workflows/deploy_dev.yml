@@ -3,7 +3,7 @@ name: Deploy in dev & Validate version
 on:
   push:
     branches:
-      - "**"
+      - master
 
 jobs:
   deploy-dev:
