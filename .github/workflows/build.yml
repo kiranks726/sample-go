@@ -7,4 +7,4 @@ on:
 
 jobs:
   build:
-    uses: kiranks726/sample-pipelines-private/.github/workflows/build.yml@master
+    uses: kiranks726/sample-pipelines/.github/workflows/build.yml@master
