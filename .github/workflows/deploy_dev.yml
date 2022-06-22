@@ -8,32 +8,3 @@ on:
 jobs:
   deploy-dev:
     uses:  kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
-
-  tag-version-git:
-    name: Tag version in GIT
-    runs-on: ubuntu-latest
-    if: ${{ needs.deploy-dev.result == 'success' && needs.validate-version.outputs.outcome == 'success' }}
-    needs: [deploy-dev, validate-version]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Create tag with version
-        env:  
-          # TODO: parameterize this from the cli when ready
-          GIT_USER: kiran.siddagangappa
-          GIT_MAIL: kiran.siddagangappa@analog.com
-        run: |
-          vers=`python3 -c "
-          import configparser
-          read_version = configparser.ConfigParser()
-          read_version.read('VERSION.ini')
-          version = read_version.get('APP', 'version')
-          print(version)"`
-
-          git config user.name "$GIT_USER"
-          git config user.email "$GIT_MAIL"
-          message="Tagged by Automated deploy in dev job, Run Number: $GITHUB_RUN_ID"
-          git tag "$vers" -m "$message"
-          git push origin "$vers"
-          echo "git tag '$vers' created"
