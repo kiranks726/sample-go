@@ -12,13 +12,10 @@ on:
           - prod
         required: true
 
-env:
-  TEMPLATE: kiranks726/sample-pipelines/.github/workflows
-    
 jobs:
   deploy:
     name: Deploy in ${{ github.event.inputs.environment }}
-    uses: ${TEMPLATE}/deploy_qa_prod.yml@master
+    uses: kiranks726/sample-pipelines/.github/workflows/deploy_qa_prod.yml@master
     with:
       environment: ${{ github.event.inputs.environment }}
     
