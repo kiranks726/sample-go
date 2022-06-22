@@ -9,8 +9,8 @@ jobs:
   deploy-dev:
     name: Deploy in dev
     uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
-    # with:
-      #environment: dev
+    with:
+      environment: dev
     secrets: inherit
 
   validate-version:
