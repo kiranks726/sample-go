@@ -7,14 +7,9 @@ on:
 
 jobs:
   deploy-dev:
-    # uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    uses: kiranks726/sample-pipelines/.github/workflows/deploy_dev.yml@master
 
   validate-version:
-    needs: deploy-dev
     uses: kiranks726/sample-pipelines/.github/workflows/validate_version.yml@master
 
   # tag-version-git:
