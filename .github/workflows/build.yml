@@ -5,9 +5,12 @@ on:
     types: [opened, synchronize, reopened]
     branches: [master]
 
+env:
+  TEMPLATE: kiranks726/sample-pipelines/.github/workflows
+  
 jobs:
   build:
     name: Build, Test & Display Reports
-    uses: kiranks726/sample-pipelines/.github/workflows/build.yml@master
+    uses: ${ TEMPLATE }/build.yml@master
     secrets: inherit
               
