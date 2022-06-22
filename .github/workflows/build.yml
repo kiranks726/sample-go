@@ -11,6 +11,6 @@ env:
 jobs:
   build:
     name: Build, Test & Display Reports
-    uses: ${{ env.TEMPLATE }}/build.yml@master
+    uses: "${{ env.TEMPLATE }}/build.yml@master"
     secrets: inherit
               
