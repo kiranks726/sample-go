@@ -18,4 +18,5 @@ jobs:
     uses: kiranks726/sample-pipelines/.github/workflows/deploy_qa_prod.yml@master
     with:
       environment: ${{ github.event.inputs.environment }}
+    secrets: inherit
     
