@@ -1,6 +1,6 @@
 # Overview
 
-CTX pipelines for serverless is a continuous integration and continuous delivery (CI/CD) platform that automates build, test, and deployment pipeline of CTX serverless applications and infrastructure
+CTX pipelines for serverless is a continuous integration and continuous delivery (CI/CD) platform that automates build, test, and deployment pipeline of CTX serverless applications and infrastructure.
 
 ## Usage
 
