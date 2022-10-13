@@ -1,5 +1,6 @@
 import * as sst from "@serverless-stack/resources";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import fs from "fs";
 
 export default class Moviestack extends sst.Stack {
   constructor(scope, id, props) {
@@ -60,6 +61,9 @@ export default class Moviestack extends sst.Stack {
     return {
       function: {
         srcPath: "backend/mainmodule",
+        bundle: {
+          copyFiles: fs.existsSync("backend/mainmodule/workflow_info.json") ? [{ from: "workflow_info.json" }] : []
+        },
         functionName: this.resourceName(`movies-${name}`),
         handler: "cmd/handlers/movies/" + name + "/" + name + ".go",
         layers: [
