@@ -2,7 +2,7 @@
 
 ## Overview
 
-CTX Platform Example Kitchen Sink Services in Go. This project is meant to showcase common patterns and best practices for application development in Go for CTX developers
+CTX Platform Example Kitchen Sink Services in Go. This project is meant to showcase common patterns and best practices for application development in Go for CTX developers.
 
 
 ## Features
