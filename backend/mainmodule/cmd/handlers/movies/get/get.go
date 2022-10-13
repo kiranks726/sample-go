@@ -1,48 +1,56 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-
-	"encoding/json"
-
-	Config "mainmodule/internal/apps/movies/config"
-	"mainmodule/internal/apps/movies/services/movies"
+	
 )
 
-func Handler(request *events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// Getting id from path parameters
-	pathParamID := request.PathParameters["id"]
+type ServiceMetadata struct {
+	Name    string `json:"name"`
+	Date    string `json:"date"`
+	Version string `json:"version"`
+	RunId   string `json:"runId"`
+	Branch  string `json:"branch"`
+}
 
-	// Load app configuration
-	config := Config.Config{}.GetConfig()
-
-	// GetItem request
-	s := movies.MovieService{TableName: config.Stacks.Movies.Tablename}
-	movie, err := s.FindOne(pathParamID)
-
-	// Checking for errors, return error
+func Handler(request events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
+	infoBytes, err := os.ReadFile("workflow_info.json")
 	if err != nil {
-		fmt.Println(err.Error())
-		return events.APIGatewayProxyResponse{StatusCode: http.StatusInternalServerError}, nil
+		return Response(err, "Error reading workflow info file")
 	}
 
-	// Marshal to type []uint8
-	marshalledItem, err := json.Marshal(movie)
-	if err != nil {
-		panic(fmt.Sprint("Failed to UnmarshalMap result.Item: ", err))
+	metadata := ServiceMetadata{}
+	if err := json.Unmarshal(infoBytes, &metadata); err != nil {
+		return Response(err, "Invalid workflow json")
 	}
 
-	// TODO: Make standard response object for REST
-	// Return marshalled item
-	response := events.APIGatewayProxyResponse{Body: string(marshalledItem), StatusCode: http.StatusOK}
-	response.Headers = make(map[string]string)
-	response.Headers["Content-Type"] = "application/json"
+	resultJson, err := json.Marshal(metadata)
+	if err != nil {
+		return Response(err, "Error encoding workflow json")
+	}
 
-	return response, nil
+	return events.APIGatewayProxyResponse{
+		Body:       string(resultJson),
+		StatusCode: http.StatusOK,
+		Headers:    map[string]string{"Content-Type": "application/json"},
+	}, nil
+}
+
+func Response(err error, msg string) (events.APIGatewayProxyResponse, error) {
+	metadata := ServiceMetadata{
+		Name: "ctx-parts-metadata-service",
+	}
+	resultJson, _ := json.Marshal(metadata)
+	return events.APIGatewayProxyResponse{
+		Body:       string(resultJson),
+		StatusCode: http.StatusOK,
+		Headers:    map[string]string{"Content-Type": "application/json"},
+	}, nil
 }
 
 func main() {
