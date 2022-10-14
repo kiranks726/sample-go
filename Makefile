@@ -61,12 +61,12 @@ start:	## Start "local" environment with supporting cloud resources
 start-${STAGE}: config/local-${STAGE}.json	## Start environment with supporting cloud resources
 	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst start --stage ${STAGE}
 
-deploy:	config/local-${STAGE}.json ## Deploy stack as complete build to AWS environment
+deploy: update-config ## Deploy stack as complete build to AWS environment
 	@echo "Resource URL: ${RESOURCE_URL}"
 	AWS_PROFILE=${AWS_PROFILE} GOOS=${DEPLOY_OS} GOARCH=${DEPLOY_ARCH} npx sst deploy --stage ${STAGE}
 
-config/local-${STAGE}.json: config/deploy.json
-	make update-config
+# config/local-${STAGE}.json: config/deploy.json
+	# make update-config
 update-config: ## Update AppConfig with latest stack details
 	AWS_PROFILE=${AWS_PROFILE} AWS_REGION=${AWS_REGION} node scripts/update-config.js ${STAGE} ${PROJECT}
 deploy-config: ## Deploy AppConfig with latest stack details
